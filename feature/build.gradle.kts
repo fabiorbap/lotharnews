@@ -7,7 +7,7 @@ val compileSdkAPI: Int by project
 val minSdkAPI: Int by project
 
 android {
-    namespace = "br.fabiorbap.lotharnews.ui"
+    namespace = "br.fabiorbap.lotharnews.feature"
     compileSdk = compileSdkAPI
 
     defaultConfig {
@@ -36,11 +36,11 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    implementation(project(":ui"))
 }
