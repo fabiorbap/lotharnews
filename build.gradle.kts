@@ -4,3 +4,13 @@ plugins {
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.kotlin.compose) apply false
 }
+
+buildscript {
+    extra.apply {
+        set("minSdkAPI", 24)
+        set("compileSdkAPI", 34)
+        set("targetSdkAPI", 34)
+        set("versionCodeNumber", 1)
+        set("versionNameText", "1.0")
+    }
+}

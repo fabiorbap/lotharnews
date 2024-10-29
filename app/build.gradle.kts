@@ -1,21 +1,34 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
 }
 
+val minSdkAPI: Int by project
+val compileSdkAPI: Int by project
+val versionCodeNumber: Int by project
+val targetSdkAPI: Int by project
+val versionNameText: String by project
+
 android {
     namespace = "br.fabiorbap.lotharnews"
-    compileSdk = 34
+    compileSdk = compileSdkAPI
 
     defaultConfig {
         applicationId = "br.fabiorbap.lotharnews"
-        minSdk = 24
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        minSdk = minSdkAPI
+        targetSdk = targetSdkAPI
+        versionCode = versionCodeNumber
+        versionName = versionNameText
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        val properties = Properties()
+        properties.load(project.rootProject.file("local.properties").inputStream())
+        buildConfigField("String", "API_KEY", properties.getProperty("API_KEY"))
+
     }
 
     buildTypes {
@@ -36,6 +49,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -49,6 +63,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.ui.text.google.fonts)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -56,4 +71,5 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    implementation(project(":ui"))
 }
