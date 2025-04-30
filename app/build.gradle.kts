@@ -5,11 +5,11 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     id("kotlin-kapt")
-    id("com.google.dagger.hilt.android")
 }
 
 val minSdkAPI: Int by project
 val compileSdkAPI: Int by project
+val targetSdkAPI: Int by project
 
 android {
     namespace = "br.fabiorbap.lotharnews"
@@ -18,7 +18,7 @@ android {
     defaultConfig {
         applicationId = "br.fabiorbap.lotharnews"
         minSdk = minSdkAPI
-        targetSdk = 34
+        targetSdk = targetSdkAPI
         versionCode = 1
         versionName = "1.0"
 
@@ -70,8 +70,15 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-    implementation(libs.android.hilt)
-    kapt(libs.android.hilt.compiler)
+    implementation(libs.koin.android)
+    implementation(libs.koin.compose)
+    implementation(libs.koin.compose.navigation)
+
+}
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
 }
 
 kapt {
