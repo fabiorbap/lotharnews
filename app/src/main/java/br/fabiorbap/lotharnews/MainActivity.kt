@@ -18,7 +18,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        R.array.com_google_android_gms_fonts_certs
         enableEdgeToEdge()
         setContent {
             LotharNewsTheme {
