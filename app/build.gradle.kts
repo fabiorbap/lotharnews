@@ -4,13 +4,12 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 val minSdkAPI: Int by project
 val compileSdkAPI: Int by project
-val versionCodeNumber: Int by project
-val targetSdkAPI: Int by project
-val versionNameText: String by project
 
 android {
     namespace = "br.fabiorbap.lotharnews"
@@ -19,9 +18,9 @@ android {
     defaultConfig {
         applicationId = "br.fabiorbap.lotharnews"
         minSdk = minSdkAPI
-        targetSdk = targetSdkAPI
-        versionCode = versionCodeNumber
-        versionName = versionNameText
+        targetSdk = 34
+        versionCode = 1
+        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -71,4 +70,10 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    implementation(libs.android.hilt)
+    kapt(libs.android.hilt.compiler)
+}
+
+kapt {
+    correctErrorTypes = true
 }

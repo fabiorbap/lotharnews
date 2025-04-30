@@ -22,5 +22,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "Lothar News"
 include(":app")
-include(":feature")
-include(":ui")
