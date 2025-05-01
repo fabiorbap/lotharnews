@@ -7,27 +7,22 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemColors
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
+import androidx.navigation.NavDestination
+import br.fabiorbap.lotharnews.screens.common.isSelected
 
 @Composable
-fun BottomNav(onClick: (route: Route) -> Unit) {
-    val selectedNavigationIndex = rememberSaveable {
-        mutableIntStateOf(0)
-    }
+fun BottomNav(onClick: (route: Route) -> Unit, currentDestination: NavDestination?) {
     NavigationBar(
         containerColor = MaterialTheme.colorScheme.surfaceContainer
     ) {
         val selectedColor = MaterialTheme.colorScheme.primary
         val unselectedColor = MaterialTheme.colorScheme.onSurfaceVariant
-        bottomNavItems.forEachIndexed { index, item ->
+        bottomNavItems.forEachIndexed { _, item ->
             NavigationBarItem(
-                selected = selectedNavigationIndex.intValue == index,
+                selected = currentDestination?.isSelected(item.route) ?: false,
                 onClick = {
-                    selectedNavigationIndex.intValue = index
                     onClick(item.route)
                 },
                 icon = {
