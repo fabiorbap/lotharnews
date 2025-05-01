@@ -1,4 +1,4 @@
-package br.fabiorbap.lotharnews.theme
+package br.fabiorbap.lotharnews.screens.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme

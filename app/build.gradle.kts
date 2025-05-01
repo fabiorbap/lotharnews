@@ -5,11 +5,14 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     id("kotlin-kapt")
-    id("com.google.dagger.hilt.android")
+    alias(libs.plugins.google.ksp)
+    idea
+    kotlin("plugin.serialization") version "2.0.21"
 }
 
 val minSdkAPI: Int by project
 val compileSdkAPI: Int by project
+val targetSdkAPI: Int by project
 
 android {
     namespace = "br.fabiorbap.lotharnews"
@@ -18,7 +21,7 @@ android {
     defaultConfig {
         applicationId = "br.fabiorbap.lotharnews"
         minSdk = minSdkAPI
-        targetSdk = 34
+        targetSdk = targetSdkAPI
         versionCode = 1
         versionName = "1.0"
 
@@ -50,6 +53,9 @@ android {
         compose = true
         buildConfig = true
     }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.15"
+    }
 }
 
 dependencies {
@@ -70,10 +76,43 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-    implementation(libs.android.hilt)
-    kapt(libs.android.hilt.compiler)
+    implementation(libs.koin.android)
+    implementation(libs.koin.compose)
+    implementation(libs.koin.compose.navigation)
+    implementation(libs.kotlin.ksp.compiler)
+    implementation(libs.kotlin.ksp.annotations)
+    implementation(libs.androidx.compose.navigation)
+    implementation(libs.kotlin.serialization)
+
+}
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
 }
 
 kapt {
     correctErrorTypes = true
+}
+
+ksp {
+    arg("KOIN_USE_COMPOSE_VIEWMODEL","true")
+    arg("KOIN_CONFIG_CHECK","true")
+}
+
+kotlin {
+    sourceSets.main {
+        kotlin.srcDir("build/generated/ksp/main/kotlin")
+    }
+    sourceSets.test {
+        kotlin.srcDir("build/generated/ksp/test/kotlin")
+    }
+}
+
+idea {
+    module {
+        sourceDirs = sourceDirs + file("build/generated/ksp/main/kotlin")
+        testSourceDirs = testSourceDirs + file("build/generated/ksp/test/kotlin")
+        generatedSourceDirs = generatedSourceDirs + file("build/generated/ksp/main/kotlin") + file("build/generated/ksp/test/kotlin")
+    }
 }
