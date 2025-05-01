@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Lothar News</string>
+
+    <!-- Navigation -->
+    <string name="bottom_nav_home">Home</string>
+    <string name="bottom_nav_profile">Profile</string>
+
 </resources>

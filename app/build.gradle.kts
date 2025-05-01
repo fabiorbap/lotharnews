@@ -7,6 +7,7 @@ plugins {
     id("kotlin-kapt")
     alias(libs.plugins.google.ksp)
     idea
+    kotlin("plugin.serialization") version "2.0.21"
 }
 
 val minSdkAPI: Int by project
@@ -52,6 +53,9 @@ android {
         compose = true
         buildConfig = true
     }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.15"
+    }
 }
 
 dependencies {
@@ -77,7 +81,8 @@ dependencies {
     implementation(libs.koin.compose.navigation)
     implementation(libs.kotlin.ksp.compiler)
     implementation(libs.kotlin.ksp.annotations)
-    testImplementation(libs.koin.test)
+    implementation(libs.androidx.compose.navigation)
+    implementation(libs.kotlin.serialization)
 
 }
 java {
