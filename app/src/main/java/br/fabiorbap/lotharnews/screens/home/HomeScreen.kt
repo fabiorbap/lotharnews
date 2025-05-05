@@ -1,5 +1,6 @@
 package br.fabiorbap.lotharnews.screens.home
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,7 +11,13 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun HomeScreen() {
-    Column(modifier = Modifier.fillMaxWidth().fillMaxHeight()) {
-        Text(text = "Home", modifier = Modifier.align(alignment = Alignment.CenterHorizontally))
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(text = "Home")
     }
 }

@@ -1,4 +1,4 @@
-package br.fabiorbap.lotharnews.screens.theme
+package br.fabiorbap.lotharnews.screens.common.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
