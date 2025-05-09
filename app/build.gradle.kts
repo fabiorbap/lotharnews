@@ -29,7 +29,8 @@ android {
 
         val properties = Properties()
         properties.load(project.rootProject.file("local.properties").inputStream())
-        buildConfigField("String", "API_KEY", properties.getProperty("API_KEY"))
+        buildConfigField("String", "API_URL", "\"https://newsapi.org/?apiKey=" +
+                "${properties.getProperty("API_KEY")}\"")
 
     }
 
@@ -83,8 +84,12 @@ dependencies {
     implementation(libs.kotlin.ksp.annotations)
     implementation(libs.androidx.compose.navigation)
     implementation(libs.kotlin.serialization)
-
+    implementation(libs.retrofit)
+    implementation(libs.gson)
+    implementation(libs.okhttp)
+    implementation(libs.okhttp.logging)
 }
+
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)
