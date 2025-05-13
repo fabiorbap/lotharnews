@@ -37,8 +37,8 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
 koin-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin" }
 koin-compose-navigation = { group = "io.insert-koin", name = "koin-androidx-compose-navigation", version.ref = "koin" }
-kotlin-ksp-annotations = { group = "io.insert-koin", name = "koin-annotations", version.ref = "koinCompiler" }
-kotlin-ksp-compiler = { group = "io.insert-koin", name = "koin-ksp-compiler", version.ref = "koinCompiler"}
+koin-ksp-annotations = { group = "io.insert-koin", name = "koin-annotations", version.ref = "koinCompiler" }
+koin-ksp-compiler = { group = "io.insert-koin", name = "koin-ksp-compiler", version.ref = "koinCompiler"}
 androidx-compose-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "composeNavigation" }
 kotlin-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinSerialization" }
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }

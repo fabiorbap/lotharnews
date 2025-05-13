@@ -1,5 +1,6 @@
 package br.fabiorbap.lotharnews.screens.home
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -10,17 +11,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import br.fabiorbap.lotharnews.news.model.News
-import br.fabiorbap.lotharnews.screens.common.UiState
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun HomeScreen(homeViewModel: HomeViewModel = koinViewModel()) {
 
-    val state: UiState by homeViewModel.uiState.collectAsStateWithLifecycle()
-    when(state) {
-        UiState.Loading -> {}
-        is UiState.Content<News?> -> {
+    val state: HomeState by homeViewModel.uiState.collectAsStateWithLifecycle()
+
+    when {
+        state.isLoading -> {}
+        state.news != null -> {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -28,11 +28,9 @@ fun HomeScreen(homeViewModel: HomeViewModel = koinViewModel()) {
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(text = "Home")
+                Text(text = state.news.toString())
             }
         }
-        is UiState.Error -> {}
+        state.error != null -> { Log.d("a", "${state.error}") }
     }
-
-
 }
