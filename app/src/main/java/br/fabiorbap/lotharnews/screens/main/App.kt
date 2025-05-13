@@ -18,26 +18,29 @@ import br.fabiorbap.lotharnews.screens.main.navigation.getGraph
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.compose.KoinApplication
+import org.koin.compose.KoinContext
 
 @Composable
 fun App() {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        bottomBar = {
-            BottomNav(
-                onClick = { route -> onBottomNavItemClick(route = route, navController) },
-                currentDestination = currentDestination
+    KoinContext {
+        Scaffold(
+            modifier = Modifier.fillMaxSize(),
+            bottomBar = {
+                BottomNav(
+                    onClick = { route -> onBottomNavItemClick(route = route, navController) },
+                    currentDestination = currentDestination
+                )
+            }
+        ) { innerPadding ->
+            NavHost(
+                navController = navController,
+                graph = getGraph(navController),
+                modifier = Modifier.padding(innerPadding)
             )
         }
-    ) { innerPadding ->
-        NavHost(
-            navController = navController,
-            graph = getGraph(navController),
-            modifier = Modifier.padding(innerPadding)
-        )
     }
 }
 

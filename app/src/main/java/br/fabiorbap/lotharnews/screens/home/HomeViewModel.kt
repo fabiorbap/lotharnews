@@ -2,9 +2,9 @@ package br.fabiorbap.lotharnews.screens.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.fabiorbap.lotharnews.common.network.Error
-import br.fabiorbap.lotharnews.common.network.Result
-import br.fabiorbap.lotharnews.common.network.mapToError
+import br.fabiorbap.lotharnews.common.network.response.Error
+import br.fabiorbap.lotharnews.common.network.response.Result
+import br.fabiorbap.lotharnews.common.network.response.mapToError
 import br.fabiorbap.lotharnews.news.model.News
 import br.fabiorbap.lotharnews.news.usecase.GetNewsUseCase
 import br.fabiorbap.lotharnews.news.usecase.ObserveNewsUseCase

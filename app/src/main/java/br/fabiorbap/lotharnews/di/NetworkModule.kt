@@ -1,6 +1,7 @@
 package br.fabiorbap.lotharnews.di
 
 import br.fabiorbap.lotharnews.BuildConfig
+import br.fabiorbap.lotharnews.common.database.AuthInterceptor
 import br.fabiorbap.lotharnews.common.network.LotharNewsApiService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -29,6 +30,7 @@ class NetworkModule {
 
         return OkHttpClient.Builder()
             .addInterceptor(logging)
+            .addInterceptor(AuthInterceptor())
             .connectTimeout(DEFAULT_TIMEOUT_SECONDS, TimeUnit.SECONDS)
             .readTimeout(DEFAULT_TIMEOUT_SECONDS, TimeUnit.SECONDS)
             .writeTimeout(DEFAULT_TIMEOUT_SECONDS, TimeUnit.SECONDS)
@@ -36,13 +38,13 @@ class NetworkModule {
     }
 
     @Single
-    fun provideRetrofit(): Retrofit {
+    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BuildConfig.API_URL)
+            .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
-
 
     @Single
     fun provideLotharNewsApiService(retrofit: Retrofit): LotharNewsApiService {

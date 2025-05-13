@@ -1,4 +1,4 @@
-package br.fabiorbap.lotharnews.common.network
+package br.fabiorbap.lotharnews.common.network.response
 
 sealed class Result {
     data object Success: Result()

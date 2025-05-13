@@ -1,6 +1,6 @@
 package br.fabiorbap.lotharnews.screens.home
 
-import br.fabiorbap.lotharnews.common.network.Error
+import br.fabiorbap.lotharnews.common.network.response.Error
 import br.fabiorbap.lotharnews.news.model.News
 
 data class HomeState(

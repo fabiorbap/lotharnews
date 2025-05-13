@@ -1,8 +1,8 @@
-package br.fabiorbap.lotharnews.common.network
+package br.fabiorbap.lotharnews.common.network.response
 
-import br.fabiorbap.lotharnews.common.network.Error.GenericError
-import br.fabiorbap.lotharnews.common.network.Error.ServerUnavailable
-import br.fabiorbap.lotharnews.common.network.Error.Unauthorized
+import br.fabiorbap.lotharnews.common.network.response.Error.GenericError
+import br.fabiorbap.lotharnews.common.network.response.Error.ServerUnavailable
+import br.fabiorbap.lotharnews.common.network.response.Error.Unauthorized
 import retrofit2.HttpException
 
 enum class HttpErrorCodes(val errorCode: Int) {

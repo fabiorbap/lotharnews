@@ -1,6 +1,6 @@
 package br.fabiorbap.lotharnews.news.usecase
 
-import br.fabiorbap.lotharnews.common.network.Result
+import br.fabiorbap.lotharnews.common.network.response.Result
 import br.fabiorbap.lotharnews.common.network.LotharNewsApiService
 import br.fabiorbap.lotharnews.news.model.NewsDAO
 import br.fabiorbap.lotharnews.news.model.toNews
