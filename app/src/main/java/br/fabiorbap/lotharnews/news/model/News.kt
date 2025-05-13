@@ -1,8 +1,8 @@
-package br.fabiorbap.lotharnews.news
+package br.fabiorbap.lotharnews.news.model
 
 import com.google.gson.annotations.SerializedName
 
-data class NewsApiModel(
+data class News(
     @SerializedName("totalResults")
     val totalResults: Int?,
     @SerializedName("articles")

@@ -1,7 +1,7 @@
 package br.fabiorbap.lotharnews.di
 
 import br.fabiorbap.lotharnews.BuildConfig
-import br.fabiorbap.lotharnews.common.networking.LotharNewsApiService
+import br.fabiorbap.lotharnews.common.network.LotharNewsApiService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.core.annotation.Module
@@ -11,7 +11,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 @Module
-class NetworkingModule {
+class NetworkModule {
 
     companion object {
         private const val DEFAULT_TIMEOUT_SECONDS = 30L

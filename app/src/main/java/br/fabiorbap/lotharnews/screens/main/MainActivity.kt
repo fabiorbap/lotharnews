@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import br.fabiorbap.lotharnews.screens.common.theme.LotharNewsTheme
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()

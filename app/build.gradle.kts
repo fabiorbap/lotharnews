@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     id("kotlin-kapt")
     alias(libs.plugins.google.ksp)
+    alias(libs.plugins.detekt)
     idea
     kotlin("plugin.serialization") version "2.0.21"
 }
