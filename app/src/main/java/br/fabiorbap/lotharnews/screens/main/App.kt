@@ -1,7 +1,9 @@
 package br.fabiorbap.lotharnews.screens.main
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -27,7 +29,7 @@ fun App() {
     val currentDestination = navBackStackEntry?.destination
     KoinContext {
         Scaffold(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background),
             bottomBar = {
                 BottomNav(
                     onClick = { route -> onBottomNavItemClick(route = route, navController) },

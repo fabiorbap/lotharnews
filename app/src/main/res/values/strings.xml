@@ -4,8 +4,13 @@
     <!-- Navigation -->
     <string name="bottom_nav_home">Home</string>
     <string name="bottom_nav_profile">Profile</string>
+
+    <!-- Home -->
+    <string name="home_list_header">Top stories</string>
     
     <!-- Content description-->
     <string name="cd_card_with_image_image">Card image</string>
+    <string name="cd_card_with_image_icon">Card icon</string>
+    <string name="cd_list_header_icon">List header icon</string>
 
 </resources>
