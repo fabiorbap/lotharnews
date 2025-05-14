@@ -4,5 +4,8 @@
     <!-- Navigation -->
     <string name="bottom_nav_home">Home</string>
     <string name="bottom_nav_profile">Profile</string>
+    
+    <!-- Content description-->
+    <string name="cd_card_with_image_image">Card image</string>
 
 </resources>

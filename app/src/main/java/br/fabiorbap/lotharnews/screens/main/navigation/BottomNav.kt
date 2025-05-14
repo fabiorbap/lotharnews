@@ -10,7 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.navigation.NavDestination
-import br.fabiorbap.lotharnews.screens.common.isSelected
+import br.fabiorbap.lotharnews.common.util.isSelected
 
 @Composable
 fun BottomNav(onClick: (route: Route) -> Unit, currentDestination: NavDestination?) {

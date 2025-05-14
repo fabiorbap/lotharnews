@@ -1,4 +1,4 @@
-package br.fabiorbap.lotharnews.screens.common
+package br.fabiorbap.lotharnews.common.util
 
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy

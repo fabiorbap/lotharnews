@@ -3,6 +3,7 @@ package br.fabiorbap.lotharnews
 import android.app.Application
 import br.fabiorbap.lotharnews.di.ApplicationModule
 import br.fabiorbap.lotharnews.di.NetworkModule
+import com.jakewharton.threetenabp.AndroidThreeTen
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -19,6 +20,7 @@ class LotharNewsApplication: Application() {
             androidContext(this@LotharNewsApplication)
             androidLogger(Level.DEBUG)
         }
+        AndroidThreeTen.init(this)
     }
 
 }
