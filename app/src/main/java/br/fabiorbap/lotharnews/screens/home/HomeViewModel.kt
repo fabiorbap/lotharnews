@@ -24,7 +24,7 @@ class HomeViewModel(
     val uiState: StateFlow<HomeState> = _uiState
 
     private var news: News? = null
-    private var isLoading: Boolean = false
+    private var isLoading: Boolean = true
     private var error: Error? = null
 
     init {
@@ -33,8 +33,12 @@ class HomeViewModel(
     }
 
     private fun getNews() = viewModelScope.launch {
+        updateState()
         when (val result = getNewsUseCase()) {
-            Result.Success -> return@launch
+            Result.Success -> {
+                isLoading = false
+                updateState()
+            }
             is Result.Failure -> {
                 error = mapToError(result.e)
             }

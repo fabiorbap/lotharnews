@@ -42,7 +42,7 @@ fun CardWithImageAndDescription(
         modifier = modifier
             .fillMaxWidth()
             .wrapContentHeight(),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
         onClick = onContentClick
     ) {
         if (image != null) ImageBlock(

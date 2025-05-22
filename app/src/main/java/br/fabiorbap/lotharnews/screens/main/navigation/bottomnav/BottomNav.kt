@@ -1,4 +1,4 @@
-package br.fabiorbap.lotharnews.screens.main.navigation
+package br.fabiorbap.lotharnews.screens.main.navigation.bottomnav
 
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -11,6 +11,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.navigation.NavDestination
 import br.fabiorbap.lotharnews.common.util.isSelected
+import br.fabiorbap.lotharnews.screens.main.navigation.Route
 
 @Composable
 fun BottomNav(onClick: (route: Route) -> Unit, currentDestination: NavDestination?) {

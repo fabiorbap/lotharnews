@@ -13,16 +13,9 @@ object Dimensions {
         val xLarge = 32.dp
     }
 
-    object FontSize {
-        val xSmall = 8.sp
-        val small = 12.sp
-        val medium = 16.sp
-        val large = 20.sp
-        val xLarge = 24.dp
-    }
-
-    object Card {
-        val cardImageHeight = 200.dp
+    object TopAppBar {
+        val iconDimension = 24.dp
+        val iconPadding = 12.dp
     }
 
 }
