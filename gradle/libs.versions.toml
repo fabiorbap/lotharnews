@@ -19,6 +19,7 @@ okhttp = "4.12.0"
 detekt = "1.23.8"
 coil = "3.2.0"
 threeTenABP = "1.4.6"
+composeAdaptive = "1.1.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -50,6 +51,9 @@ okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor",
 coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil"}
 coil-network = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil"}
 date-threetenabp = {group = "com.jakewharton.threetenabp", name = "threetenabp", version.ref = "threeTenABP"}
+compose-adaptive = { group = "androidx.compose.material3.adaptive", name = "adaptive", version.ref = "composeAdaptive" }
+compose-adaptive-layout = { group = "androidx.compose.material3.adaptive", name = "adaptive-layout", version.ref = "composeAdaptive" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }

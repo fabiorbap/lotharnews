@@ -16,12 +16,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import br.fabiorbap.lotharnews.R
 import br.fabiorbap.lotharnews.common.util.formatIsoDate
 import br.fabiorbap.lotharnews.news.model.News
 import br.fabiorbap.lotharnews.screens.common.component.CardWithImageAndDescription
 import br.fabiorbap.lotharnews.screens.common.component.IconToggle
 import br.fabiorbap.lotharnews.screens.common.component.ListHeader
+import br.fabiorbap.lotharnews.screens.common.component.Placeholder
 import br.fabiorbap.lotharnews.screens.common.theme.Dimensions
 import org.koin.androidx.compose.koinViewModel
 
@@ -40,9 +42,10 @@ fun HomeScreen(homeViewModel: HomeViewModel = koinViewModel()) {
         {
             CircularProgressIndicator()
         }
+
         state.news != null -> NewsList(state.news)
         state.error != null -> {
-            Log.d("Error loading news", "${state.error}")
+            Placeholder { homeViewModel.handleIntent(HomeIntent.GetNews) }
         }
     }
 }
@@ -59,7 +62,7 @@ private fun NewsList(news: News?) {
         verticalArrangement = Arrangement.spacedBy(Dimensions.DefaultSpacing.medium)
     ) {
         item {
-            ListHeader(R.drawable.ic_trending, stringResource(R.string.home_list_header))
+            ListHeader(R.drawable.ic_trending, stringResource(R.string.home_header))
         }
 
         items(news?.articles ?: listOf()) {

@@ -37,7 +37,6 @@ fun CardWithImageAndDescription(
     onIconClick: () -> Unit = {},
     isIconActive: Boolean = false
 ) {
-
     Card(
         modifier = modifier
             .fillMaxWidth()
@@ -108,6 +107,6 @@ private fun TextBlock(modifier: Modifier, description: String, caption: String) 
                 .wrapContentHeight()
                 .padding(top = Dimensions.DefaultSpacing.small),
             style = MaterialTheme.typography.labelSmall, text = caption
-        )
+        )   
     }
 }

@@ -32,6 +32,12 @@ class HomeViewModel(
         getNews()
     }
 
+    fun handleIntent(intent: HomeIntent) {
+        when(intent) {
+            HomeIntent.GetNews -> getNews()
+        }
+    }
+
     private fun getNews() = viewModelScope.launch {
         updateState()
         when (val result = getNewsUseCase()) {
@@ -40,7 +46,9 @@ class HomeViewModel(
                 updateState()
             }
             is Result.Failure -> {
+                isLoading = false
                 error = mapToError(result.e)
+                updateState()
             }
         }
     }

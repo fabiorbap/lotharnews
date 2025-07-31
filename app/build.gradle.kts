@@ -92,6 +92,8 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.coil.network)
     implementation(libs.date.threetenabp)
+    implementation(libs.compose.adaptive)
+    implementation(libs.compose.adaptive.layout)
 
 }
 

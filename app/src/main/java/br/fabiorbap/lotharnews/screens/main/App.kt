@@ -34,7 +34,6 @@ fun App() {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
     KoinContext {
-
         var appBarState: AppBarState by remember { mutableStateOf(AppBarState.Home) }
 
         Scaffold(
