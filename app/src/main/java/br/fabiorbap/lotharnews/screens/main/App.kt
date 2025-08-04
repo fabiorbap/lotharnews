@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
@@ -35,7 +37,7 @@ fun App() {
     val currentDestination = navBackStackEntry?.destination
     KoinContext {
         var appBarState: AppBarState by remember { mutableStateOf(AppBarState.Home) }
-
+        val snackbarHostState: SnackbarHostState = remember { SnackbarHostState() }
         Scaffold(
             modifier = Modifier
                 .fillMaxSize()
@@ -48,12 +50,13 @@ fun App() {
             },
             topBar = {
                 AppBar(appBarState, { navController.popBackStack() })
-            }
+            },
+            snackbarHost = { SnackbarHost(snackbarHostState) }
         ) { innerPadding ->
             val graph = navController.createGraph(startDestination = Home) {
                 composable<Home> {
                     appBarState = AppBarState.Home
-                    HomeScreen()
+                    HomeScreen(snackbarHostState = snackbarHostState)
                 }
                 composable<Profile> {
                     appBarState = AppBarState.Profile

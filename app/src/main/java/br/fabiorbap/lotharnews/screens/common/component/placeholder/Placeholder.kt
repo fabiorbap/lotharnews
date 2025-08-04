@@ -1,9 +1,11 @@
-package br.fabiorbap.lotharnews.screens.common.component
+package br.fabiorbap.lotharnews.screens.common.component.placeholder
 
+import androidx.annotation.DrawableRes
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.Button
@@ -15,23 +17,27 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.text.style.TextAlign
 import br.fabiorbap.lotharnews.R
 import br.fabiorbap.lotharnews.screens.common.theme.Dimensions
 
 @Composable
-fun Placeholder(text: String = stringResource(R.string.placeholder_generic_error), onRetryClick: () -> Unit) {
-    Column {
+fun Placeholder(
+    text: String = stringResource(R.string.placeholder_generic_error),
+    @DrawableRes icon: Int = R.drawable.ic_error,
+    onRetryClick: () -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         Icon(
             modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .padding(
-                    top = Dimensions.DefaultSpacing.medium,
-                    end = Dimensions.DefaultSpacing.medium
-                )
-                .height(28.dp)
-                .width(28.dp),
-            painter = painterResource(R.drawable.ic_error),
+                .align(Alignment.CenterHorizontally),
+            painter = painterResource(icon),
             contentDescription = stringResource(R.string.cd_card_with_image_icon),
             tint = MaterialTheme.colorScheme.primary,
         )
@@ -40,11 +46,16 @@ fun Placeholder(text: String = stringResource(R.string.placeholder_generic_error
                 .align(Alignment.CenterHorizontally)
                 .padding(Dimensions.DefaultSpacing.medium),
             text = text,
+            textAlign = TextAlign.Center,
             style = MaterialTheme.typography.bodyMedium,
         )
         Button(onClick = onRetryClick) {
-            Text(modifier = Modifier.wrapContentWidth().wrapContentHeight(),
-                text = stringResource(R.string.retry))
+            Text(
+                modifier = Modifier
+                    .wrapContentWidth()
+                    .wrapContentHeight(),
+                text = stringResource(R.string.retry)
+            )
         }
     }
 }

@@ -1,6 +1,5 @@
 package br.fabiorbap.lotharnews.screens.home
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -10,27 +9,41 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import br.fabiorbap.lotharnews.R
 import br.fabiorbap.lotharnews.common.util.formatIsoDate
+import br.fabiorbap.lotharnews.common.util.showError
 import br.fabiorbap.lotharnews.news.model.News
 import br.fabiorbap.lotharnews.screens.common.component.CardWithImageAndDescription
 import br.fabiorbap.lotharnews.screens.common.component.IconToggle
 import br.fabiorbap.lotharnews.screens.common.component.ListHeader
-import br.fabiorbap.lotharnews.screens.common.component.Placeholder
+import br.fabiorbap.lotharnews.screens.common.component.placeholder.PlaceholderConnectionError
+import br.fabiorbap.lotharnews.screens.common.component.placeholder.PlaceholderGenericError
 import br.fabiorbap.lotharnews.screens.common.theme.Dimensions
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun HomeScreen(homeViewModel: HomeViewModel = koinViewModel()) {
+fun HomeScreen(
+    homeViewModel: HomeViewModel = koinViewModel(),
+    snackbarHostState: SnackbarHostState
+) {
 
     val state: HomeState by homeViewModel.uiState.collectAsStateWithLifecycle()
+    val scope = rememberCoroutineScope()
+    val onRetry = {
+        homeViewModel.handleIntent(
+            HomeIntent.GetNews
+        )
+    }
+
     when {
         state.isLoading -> Column(
             modifier = Modifier
@@ -45,7 +58,20 @@ fun HomeScreen(homeViewModel: HomeViewModel = koinViewModel()) {
 
         state.news != null -> NewsList(state.news)
         state.error != null -> {
-            Placeholder { homeViewModel.handleIntent(HomeIntent.GetNews) }
+            showError(
+                snackbarHostState = snackbarHostState, context = LocalContext.current,
+                scope = scope,
+                onConnectionError = {
+                    PlaceholderConnectionError {
+                        onRetry()
+                    }
+                },
+                onError = {
+                    PlaceholderGenericError {
+                        onRetry()
+                    }
+                }
+            )
         }
     }
 }

@@ -39,6 +39,7 @@ class HomeViewModel(
     }
 
     private fun getNews() = viewModelScope.launch {
+        isLoading = true
         updateState()
         when (val result = getNewsUseCase()) {
             Result.Success -> {
