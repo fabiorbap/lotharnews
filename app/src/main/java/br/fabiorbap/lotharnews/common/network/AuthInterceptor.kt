@@ -1,4 +1,4 @@
-package br.fabiorbap.lotharnews.common.database
+package br.fabiorbap.lotharnews.common.network
 
 import br.fabiorbap.lotharnews.BuildConfig
 import okhttp3.Interceptor

@@ -1,14 +1,12 @@
 package br.fabiorbap.lotharnews.screens.home
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -19,16 +17,20 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.fabiorbap.lotharnews.R
+import br.fabiorbap.lotharnews.article.model.Article
 import br.fabiorbap.lotharnews.common.util.formatIsoDate
 import br.fabiorbap.lotharnews.common.util.showError
-import br.fabiorbap.lotharnews.news.model.News
+import br.fabiorbap.lotharnews.article.model.News
 import br.fabiorbap.lotharnews.screens.common.component.CardWithImageAndDescription
 import br.fabiorbap.lotharnews.screens.common.component.IconToggle
 import br.fabiorbap.lotharnews.screens.common.component.ListHeader
+import br.fabiorbap.lotharnews.screens.common.component.LoadingFullscreen
 import br.fabiorbap.lotharnews.screens.common.component.placeholder.PlaceholderConnectionError
 import br.fabiorbap.lotharnews.screens.common.component.placeholder.PlaceholderGenericError
 import br.fabiorbap.lotharnews.screens.common.theme.Dimensions
+import kotlinx.coroutines.CoroutineScope
 import org.koin.androidx.compose.koinViewModel
+import java.util.UUID
 
 @Composable
 fun HomeScreen(
@@ -45,39 +47,14 @@ fun HomeScreen(
     }
 
     when {
-        state.isLoading -> Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        )
-        {
-            CircularProgressIndicator()
-        }
-
-        state.news != null -> NewsList(state.news)
-        state.error != null -> {
-            showError(
-                snackbarHostState = snackbarHostState, context = LocalContext.current,
-                scope = scope,
-                onConnectionError = {
-                    PlaceholderConnectionError {
-                        onRetry()
-                    }
-                },
-                onError = {
-                    PlaceholderGenericError {
-                        onRetry()
-                    }
-                }
-            )
-        }
+        state.isLoading -> LoadingFullscreen()
+        state.articles != null -> NewsList(state.articles)
+        state.error != null -> Error(snackbarHostState, scope, onRetry)
     }
 }
 
 @Composable
-private fun NewsList(news: News?) {
+private fun NewsList(articles: List<Article>?) {
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
@@ -87,11 +64,11 @@ private fun NewsList(news: News?) {
         contentPadding = PaddingValues(vertical = Dimensions.DefaultSpacing.small),
         verticalArrangement = Arrangement.spacedBy(Dimensions.DefaultSpacing.medium)
     ) {
-        item {
+        item(key = "header") {
             ListHeader(R.drawable.ic_trending, stringResource(R.string.home_header))
         }
 
-        items(news?.articles ?: listOf()) {
+        items(articles ?: listOf(), key = { item -> item.url ?: UUID.randomUUID() }) {
             CardWithImageAndDescription(
                 image = it.urlToImage, description = it.title ?: "",
                 caption = it.publishedAt?.formatIsoDate() ?: "",
@@ -99,4 +76,26 @@ private fun NewsList(news: News?) {
             )
         }
     }
+}
+
+@Composable
+private fun Error(
+    snackbarHostState: SnackbarHostState,
+    scope: CoroutineScope,
+    onRetry: () -> Unit
+) {
+    showError(
+        snackbarHostState = snackbarHostState, context = LocalContext.current,
+        scope = scope,
+        onConnectionError = {
+            PlaceholderConnectionError {
+                onRetry()
+            }
+        },
+        onError = {
+            PlaceholderGenericError {
+                onRetry()
+            }
+        }
+    )
 }

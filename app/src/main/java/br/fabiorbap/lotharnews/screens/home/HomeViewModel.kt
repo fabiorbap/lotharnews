@@ -2,12 +2,12 @@ package br.fabiorbap.lotharnews.screens.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import br.fabiorbap.lotharnews.article.model.Article
 import br.fabiorbap.lotharnews.common.network.response.Error
 import br.fabiorbap.lotharnews.common.network.response.Result
 import br.fabiorbap.lotharnews.common.network.response.mapToError
-import br.fabiorbap.lotharnews.news.model.News
-import br.fabiorbap.lotharnews.news.usecase.GetNewsUseCase
-import br.fabiorbap.lotharnews.news.usecase.ObserveNewsUseCase
+import br.fabiorbap.lotharnews.article.usecase.GetArticlesUseCase
+import br.fabiorbap.lotharnews.article.usecase.ObserveArticlesUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -16,32 +16,32 @@ import org.koin.android.annotation.KoinViewModel
 
 @KoinViewModel
 class HomeViewModel(
-    private val getNewsUseCase: GetNewsUseCase,
-    private val observeNewsUseCase: ObserveNewsUseCase
+    private val getArticlesUseCase: GetArticlesUseCase,
+    private val observeArticlesUseCase: ObserveArticlesUseCase
 ) : ViewModel() {
 
     private val _uiState: MutableStateFlow<HomeState> = MutableStateFlow(HomeState())
     val uiState: StateFlow<HomeState> = _uiState
 
-    private var news: News? = null
+    private var articles: List<Article>? = null
     private var isLoading: Boolean = true
     private var error: Error? = null
 
     init {
-        observeNews()
-        getNews()
+        observeArticles()
+        getArticles()
     }
 
     fun handleIntent(intent: HomeIntent) {
         when(intent) {
-            HomeIntent.GetNews -> getNews()
+            HomeIntent.GetNews -> getArticles()
         }
     }
 
-    private fun getNews() = viewModelScope.launch {
+    private fun getArticles() = viewModelScope.launch {
         isLoading = true
         updateState()
-        when (val result = getNewsUseCase()) {
+        when (val result = getArticlesUseCase()) {
             Result.Success -> {
                 isLoading = false
                 updateState()
@@ -54,9 +54,9 @@ class HomeViewModel(
         }
     }
 
-    private fun observeNews() = viewModelScope.launch {
-        observeNewsUseCase().collect {
-            news = it
+    private fun observeArticles() = viewModelScope.launch {
+        observeArticlesUseCase().collect {
+            articles = it
             updateState()
         }
     }
@@ -65,7 +65,7 @@ class HomeViewModel(
         _uiState.update {
             it.copy(
                 isLoading = isLoading,
-                news = news,
+                articles = articles,
                 error = error
             )
         }

@@ -20,6 +20,7 @@ detekt = "1.23.8"
 coil = "3.2.0"
 threeTenABP = "1.4.6"
 composeAdaptive = "1.1.0"
+room = "2.7.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -53,7 +54,9 @@ coil-network = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", versi
 date-threetenabp = {group = "com.jakewharton.threetenabp", name = "threetenabp", version.ref = "threeTenABP"}
 compose-adaptive = { group = "androidx.compose.material3.adaptive", name = "adaptive", version.ref = "composeAdaptive" }
 compose-adaptive-layout = { group = "androidx.compose.material3.adaptive", name = "adaptive-layout", version.ref = "composeAdaptive" }
-
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room"}
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room"}
+room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }

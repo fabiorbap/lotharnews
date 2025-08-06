@@ -58,6 +58,10 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.15"
     }
+
+    ksp {
+        arg("room.schemaLocation", "$projectDir/schemas")
+    }
 }
 
 dependencies {
@@ -94,6 +98,9 @@ dependencies {
     implementation(libs.date.threetenabp)
     implementation(libs.compose.adaptive)
     implementation(libs.compose.adaptive.layout)
+    implementation(libs.room.runtime)
+    ksp(libs.room.compiler)
+    implementation(libs.room.ktx)
 
 }
 

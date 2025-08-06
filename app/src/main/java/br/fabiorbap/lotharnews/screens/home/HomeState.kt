@@ -1,10 +1,11 @@
 package br.fabiorbap.lotharnews.screens.home
 
+import br.fabiorbap.lotharnews.article.model.Article
 import br.fabiorbap.lotharnews.common.network.response.Error
-import br.fabiorbap.lotharnews.news.model.News
+import br.fabiorbap.lotharnews.article.model.News
 
 data class HomeState(
     val isLoading: Boolean = false,
-    val news: News? = null,
+    val articles: List<Article>? = null,
     val error: Error? = null
 )

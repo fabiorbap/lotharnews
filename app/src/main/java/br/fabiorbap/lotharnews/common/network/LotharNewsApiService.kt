@@ -1,6 +1,6 @@
 package br.fabiorbap.lotharnews.common.network
 
-import br.fabiorbap.lotharnews.news.model.NewsResponse
+import br.fabiorbap.lotharnews.article.model.NewsResponse
 import retrofit2.http.GET
 
 interface LotharNewsApiService {

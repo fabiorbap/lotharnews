@@ -1,7 +1,7 @@
 package br.fabiorbap.lotharnews.di
 
 import br.fabiorbap.lotharnews.BuildConfig
-import br.fabiorbap.lotharnews.common.database.AuthInterceptor
+import br.fabiorbap.lotharnews.common.network.AuthInterceptor
 import br.fabiorbap.lotharnews.common.network.LotharNewsApiService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

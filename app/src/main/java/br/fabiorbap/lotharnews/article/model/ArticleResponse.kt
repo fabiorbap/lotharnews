@@ -1,4 +1,4 @@
-package br.fabiorbap.lotharnews.news.model
+package br.fabiorbap.lotharnews.article.model
 
 import com.google.gson.annotations.SerializedName
 
