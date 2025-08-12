@@ -6,6 +6,7 @@
     <string name="placeholder_button">Retry</string>
     <string name="placeholder_connection_error">There was a connection error, please check your internet connection.</string>
     <string name="retry">Retry</string>
+    <string name="refresh">Refresh</string>
     <string name="generic_error_text">There was an error while performing this action.</string>
 
     <!-- Navigation -->
@@ -14,7 +15,8 @@
 
     <!-- Home -->
     <string name="home_header">Top stories</string>
-    <string name="home_empty_placeholder">There are no stories to show.</string>
+    <string name="home_empty_list_text">There are no news to be displayed. Please, refresh.</string>
+
 
     <!-- Content description-->
     <string name="cd_card_with_image_image">Card image</string>

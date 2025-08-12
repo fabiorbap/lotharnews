@@ -18,4 +18,8 @@ class ArticleRepository(private val articleDao: ArticleDao,
         return articleDao.observeArticles()
     }
 
+    fun getArticle(id: String): Article {
+        return articleDao.getArticle(id).toModel()
+    }
+
 }

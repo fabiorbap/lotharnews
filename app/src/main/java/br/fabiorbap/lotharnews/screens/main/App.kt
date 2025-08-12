@@ -20,11 +20,14 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.createGraph
+import androidx.navigation.toRoute
+import br.fabiorbap.lotharnews.screens.detail.DetailScreen
 import br.fabiorbap.lotharnews.screens.home.HomeScreen
 import br.fabiorbap.lotharnews.screens.main.navigation.appbar.AppBar
 import br.fabiorbap.lotharnews.screens.main.navigation.appbar.AppBarState
 import br.fabiorbap.lotharnews.screens.main.navigation.bottomnav.BottomNav
 import br.fabiorbap.lotharnews.screens.main.navigation.Route
+import br.fabiorbap.lotharnews.screens.main.navigation.Route.Detail
 import br.fabiorbap.lotharnews.screens.main.navigation.Route.Home
 import br.fabiorbap.lotharnews.screens.main.navigation.Route.Profile
 import br.fabiorbap.lotharnews.screens.profile.ProfileScreen
@@ -56,11 +59,20 @@ fun App() {
             val graph = navController.createGraph(startDestination = Home) {
                 composable<Home> {
                     appBarState = AppBarState.Home
-                    HomeScreen(snackbarHostState = snackbarHostState)
+                    HomeScreen(snackbarHostState = snackbarHostState) { id ->
+                        navController.navigate(
+                            Detail(id)
+                        )
+                    }
                 }
                 composable<Profile> {
                     appBarState = AppBarState.Profile
                     ProfileScreen()
+                }
+                composable<Detail> { backStackEntry ->
+                    appBarState = AppBarState.Detail
+                    val id = backStackEntry.toRoute<Detail>().id
+                    DetailScreen(id)
                 }
             }
             NavHost(

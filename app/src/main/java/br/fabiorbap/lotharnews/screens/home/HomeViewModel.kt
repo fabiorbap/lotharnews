@@ -44,6 +44,7 @@ class HomeViewModel(
         when (val result = getArticlesUseCase()) {
             Result.Success -> {
                 isLoading = false
+                error = null
                 updateState()
             }
             is Result.Failure -> {

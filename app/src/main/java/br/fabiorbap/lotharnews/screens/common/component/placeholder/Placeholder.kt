@@ -25,6 +25,7 @@ import br.fabiorbap.lotharnews.screens.common.theme.Dimensions
 fun Placeholder(
     text: String = stringResource(R.string.placeholder_generic_error),
     @DrawableRes icon: Int = R.drawable.ic_error,
+    buttonText: String = stringResource(R.string.retry),
     onRetryClick: () -> Unit
 ) {
     Column(
@@ -54,7 +55,7 @@ fun Placeholder(
                 modifier = Modifier
                     .wrapContentWidth()
                     .wrapContentHeight(),
-                text = stringResource(R.string.retry)
+                text = buttonText
             )
         }
     }

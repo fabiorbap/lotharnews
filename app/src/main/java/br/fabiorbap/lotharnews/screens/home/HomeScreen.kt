@@ -20,11 +20,11 @@ import br.fabiorbap.lotharnews.R
 import br.fabiorbap.lotharnews.article.model.Article
 import br.fabiorbap.lotharnews.common.util.formatIsoDate
 import br.fabiorbap.lotharnews.common.util.showError
-import br.fabiorbap.lotharnews.article.model.News
 import br.fabiorbap.lotharnews.screens.common.component.CardWithImageAndDescription
 import br.fabiorbap.lotharnews.screens.common.component.IconToggle
 import br.fabiorbap.lotharnews.screens.common.component.ListHeader
 import br.fabiorbap.lotharnews.screens.common.component.LoadingFullscreen
+import br.fabiorbap.lotharnews.screens.common.component.placeholder.Placeholder
 import br.fabiorbap.lotharnews.screens.common.component.placeholder.PlaceholderConnectionError
 import br.fabiorbap.lotharnews.screens.common.component.placeholder.PlaceholderGenericError
 import br.fabiorbap.lotharnews.screens.common.theme.Dimensions
@@ -35,7 +35,8 @@ import java.util.UUID
 @Composable
 fun HomeScreen(
     homeViewModel: HomeViewModel = koinViewModel(),
-    snackbarHostState: SnackbarHostState
+    snackbarHostState: SnackbarHostState,
+    onCardClick: (String) -> Unit
 ) {
 
     val state: HomeState by homeViewModel.uiState.collectAsStateWithLifecycle()
@@ -48,13 +49,15 @@ fun HomeScreen(
 
     when {
         state.isLoading -> LoadingFullscreen()
-        state.articles != null -> NewsList(state.articles)
+        state.articles?.isNotEmpty() == true -> NewsList(state.articles, onCardClick)
+        state.articles?.isEmpty() == true -> Placeholder(stringResource(R.string.home_empty_list_text),
+            buttonText = stringResource(R.string.refresh)) { onRetry() }
         state.error != null -> Error(snackbarHostState, scope, onRetry)
     }
 }
 
 @Composable
-private fun NewsList(articles: List<Article>?) {
+private fun NewsList(articles: List<Article>?, onCardClick: (String) -> Unit) {
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
@@ -73,6 +76,7 @@ private fun NewsList(articles: List<Article>?) {
                 image = it.urlToImage, description = it.title ?: "",
                 caption = it.publishedAt?.formatIsoDate() ?: "",
                 icons = IconToggle(R.drawable.ic_bookmark_saved, R.drawable.ic_bookmark),
+                onContentClick = { onCardClick(it.url ?: "") }
             )
         }
     }
