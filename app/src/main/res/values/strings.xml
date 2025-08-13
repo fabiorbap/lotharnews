@@ -17,6 +17,8 @@
     <string name="home_header">Top stories</string>
     <string name="home_empty_list_text">There are no news to be displayed. Please, refresh.</string>
 
+    <!-- Detail -->
+    <string name="detail_source_text">%s | %s</string>
 
     <!-- Content description-->
     <string name="cd_card_with_image_image">Card image</string>
@@ -24,5 +26,6 @@
     <string name="cd_list_header_icon">List header icon</string>
     <string name="cd_app_logo">Lothar News logo</string>
     <string name="cd_back_button">Back button</string>
+    <string name="cd_detail_image">Detail image</string>
 
 </resources>

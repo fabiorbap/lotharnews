@@ -4,7 +4,6 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import androidx.room.Transaction
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -23,15 +22,18 @@ interface ArticleDao {
 
     @Query(
         """
-        SELECT article.author,
+        SELECT 
+        article.id,
+        article.author,
         article.content,
         article.description,
         article.name,
         article.publishedAt,
         article.title,
-        article.urlToImage
-        FROM ArticleEntity article WHERE article.id = :id"""
+        article.urlToImage,
+        article.url
+        FROM ArticleEntity article WHERE article.url = :id"""
     )
-    fun getArticle(id: String): ArticleEntity
+    suspend fun getArticle(id: String): ArticleEntity
 
 }
