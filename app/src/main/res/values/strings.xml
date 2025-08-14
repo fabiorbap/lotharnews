@@ -27,5 +27,6 @@
     <string name="cd_app_logo">Lothar News logo</string>
     <string name="cd_back_button">Back button</string>
     <string name="cd_detail_image">Detail image</string>
+    <string name="cd_profile_placeholder_image">Profile placeholder image</string>
 
 </resources>

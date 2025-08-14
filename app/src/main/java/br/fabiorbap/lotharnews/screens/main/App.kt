@@ -16,6 +16,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -32,6 +33,8 @@ import br.fabiorbap.lotharnews.screens.main.navigation.Route.Home
 import br.fabiorbap.lotharnews.screens.main.navigation.Route.Profile
 import br.fabiorbap.lotharnews.screens.profile.ProfileScreen
 import org.koin.compose.KoinContext
+import androidx.navigation.NavDestination.Companion.hasRoute
+
 
 @Composable
 fun App() {
@@ -46,13 +49,13 @@ fun App() {
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.background),
             bottomBar = {
-                BottomNav(
+                if (!shouldHideBottomNav(currentDestination)) BottomNav(
                     onClick = { route -> onBottomNavItemClick(route = route, navController) },
                     currentDestination = currentDestination
                 )
             },
             topBar = {
-                AppBar(appBarState, { navController.popBackStack() })
+                AppBar(appBarState) { navController.popBackStack() }
             },
             snackbarHost = { SnackbarHost(snackbarHostState) }
         ) { innerPadding ->
@@ -92,4 +95,8 @@ fun onBottomNavItemClick(route: Route, navController: NavController) {
         launchSingleTop = true
         restoreState = true
     }
+}
+
+fun shouldHideBottomNav(currentDestination: NavDestination?): Boolean {
+    return currentDestination?.hasRoute<Detail>() ?: false
 }
