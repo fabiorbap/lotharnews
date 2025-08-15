@@ -11,7 +11,8 @@ fun ArticleResponse.toEntity(): ArticleEntity {
         url = url ?: UUID.randomUUID().toString(),
         urlToImage = urlToImage,
         publishedAt = publishedAt,
-        content = content
+        content = content,
+        isFavorite = false
     )
 }
 

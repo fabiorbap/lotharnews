@@ -34,6 +34,8 @@ import br.fabiorbap.lotharnews.screens.main.navigation.Route.Profile
 import br.fabiorbap.lotharnews.screens.profile.ProfileScreen
 import org.koin.compose.KoinContext
 import androidx.navigation.NavDestination.Companion.hasRoute
+import br.fabiorbap.lotharnews.screens.favorites.FavoritesScreen
+import br.fabiorbap.lotharnews.screens.main.navigation.Route.Favorites
 
 
 @Composable
@@ -70,12 +72,18 @@ fun App() {
                 }
                 composable<Profile> {
                     appBarState = AppBarState.Profile
-                    ProfileScreen()
+                    ProfileScreen {
+                        navController.navigate(Favorites)
+                    }
                 }
                 composable<Detail> { backStackEntry ->
                     appBarState = AppBarState.Detail
                     val id = backStackEntry.toRoute<Detail>().id
                     DetailScreen(id)
+                }
+                composable<Favorites> {
+                    appBarState = AppBarState.Favorites
+                    FavoritesScreen()
                 }
             }
             NavHost(
@@ -98,5 +106,6 @@ fun onBottomNavItemClick(route: Route, navController: NavController) {
 }
 
 fun shouldHideBottomNav(currentDestination: NavDestination?): Boolean {
-    return currentDestination?.hasRoute<Detail>() ?: false
+    return (currentDestination?.hasRoute<Detail>() == true ||
+            currentDestination?.hasRoute<Favorites>() == true)
 }

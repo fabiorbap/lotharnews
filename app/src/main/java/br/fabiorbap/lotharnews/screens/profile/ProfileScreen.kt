@@ -23,7 +23,7 @@ import br.fabiorbap.lotharnews.R
 import br.fabiorbap.lotharnews.screens.common.component.MenuItem
 
 @Composable
-fun ProfileScreen() {
+fun ProfileScreen(onFavoriteClick: () -> Unit) {
     Column(modifier = Modifier.fillMaxSize()) {
         Spacer(Modifier.fillMaxHeight(0.2f))
         Image(
@@ -46,7 +46,8 @@ fun ProfileScreen() {
         Spacer(Modifier.fillMaxHeight(0.1f))
         MenuItem(
             text = stringResource(R.string.profile_favorites_text),
-            icon = R.drawable.ic_bookmark_saved
+            icon = R.drawable.ic_bookmark_saved,
+            onMenuItemClick = { onFavoriteClick() }
         )
     }
 }

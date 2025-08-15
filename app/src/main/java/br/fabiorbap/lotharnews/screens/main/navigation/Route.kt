@@ -10,4 +10,6 @@ sealed class Route {
     data object Profile: Route()
     @Serializable
     data class Detail(val id: String): Route()
+    @Serializable
+    data object Favorites: Route()
 }

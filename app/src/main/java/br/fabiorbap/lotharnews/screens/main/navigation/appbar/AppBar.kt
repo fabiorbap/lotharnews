@@ -39,8 +39,9 @@ fun AppBar(appBarState: AppBarState, onBackButtonClick: () -> Unit) {
 
 @Composable
 private fun AppBarNavigationIcon(appBarState: AppBarState, onBackButtonClick: () -> Unit) {
-    when (appBarState) {
-        AppBarState.Home -> Image(
+    val backArrowScreens = listOf(AppBarState.Profile, AppBarState.Detail, AppBarState.Favorites)
+    when {
+        appBarState is AppBarState.Home -> Image(
             modifier = Modifier
                 .padding(Dimensions.TopAppBar.iconPadding)
                 .width(Dimensions.TopAppBar.iconDimension)
@@ -49,8 +50,7 @@ private fun AppBarNavigationIcon(appBarState: AppBarState, onBackButtonClick: ()
             contentDescription =
                 stringResource(R.string.cd_app_logo)
         )
-
-        AppBarState.Profile, AppBarState.Detail -> IconButton(onClick = { onBackButtonClick() }) {
+        backArrowScreens.contains(appBarState) -> IconButton(onClick = { onBackButtonClick() }) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                 contentDescription = stringResource(R.string.cd_back_button)
@@ -66,6 +66,7 @@ private fun AppBarText(appBarState: AppBarState) {
             AppBarState.Detail -> ""
             AppBarState.Home -> stringResource(R.string.app_name)
             AppBarState.Profile -> ""
+            AppBarState.Favorites -> ""
         }
     )
 }

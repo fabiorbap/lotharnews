@@ -1,5 +1,6 @@
 package br.fabiorbap.lotharnews.article.model
 
+import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -15,5 +16,6 @@ data class ArticleEntity(
     val description: String?,
     val urlToImage: String?,
     val publishedAt: String?,
-    val content: String?
+    val content: String?,
+    val isFavorite: Boolean?
 )
