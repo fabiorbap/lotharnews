@@ -1,16 +1,12 @@
 package br.fabiorbap.lotharnews.screens.profile
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -19,12 +15,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import br.fabiorbap.lotharnews.R
+import br.fabiorbap.lotharnews.screens.common.component.MenuItem
 
 @Composable
 fun ProfileScreen() {
@@ -46,6 +42,11 @@ fun ProfileScreen() {
             style = MaterialTheme.typography.titleLarge,
             text = "John Doe",
             textAlign = TextAlign.Center
+        )
+        Spacer(Modifier.fillMaxHeight(0.1f))
+        MenuItem(
+            text = stringResource(R.string.profile_favorites_text),
+            icon = R.drawable.ic_bookmark_saved
         )
     }
 }

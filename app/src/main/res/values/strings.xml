@@ -20,6 +20,9 @@
     <!-- Detail -->
     <string name="detail_source_text">%s | %s</string>
 
+    <!-- Profile -->
+    <string name="profile_favorites_text">Favorites</string>
+
     <!-- Content description-->
     <string name="cd_card_with_image_image">Card image</string>
     <string name="cd_card_with_image_icon">Card icon</string>
