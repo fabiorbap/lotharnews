@@ -65,9 +65,7 @@ fun App() {
                 composable<Home> {
                     appBarState = AppBarState.Home
                     HomeScreen(snackbarHostState = snackbarHostState) { id ->
-                        navController.navigate(
-                            Detail(id)
-                        )
+                        goToDetail(id, navController)
                     }
                 }
                 composable<Profile> {
@@ -83,7 +81,7 @@ fun App() {
                 }
                 composable<Favorites> {
                     appBarState = AppBarState.Favorites
-                    FavoritesScreen()
+                    FavoritesScreen { id -> goToDetail(id, navController) }
                 }
             }
             NavHost(
@@ -93,6 +91,10 @@ fun App() {
             )
         }
     }
+}
+
+private fun goToDetail(id: String, navController: NavController) {
+    navController.navigate(Detail(id))
 }
 
 fun onBottomNavItemClick(route: Route, navController: NavController) {

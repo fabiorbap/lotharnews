@@ -1,4 +1,4 @@
-package br.fabiorbap.lotharnews.user
+package br.fabiorbap.lotharnews.user.model
 
 import br.fabiorbap.lotharnews.article.model.ArticleDao
 import br.fabiorbap.lotharnews.article.model.ArticleEntity
@@ -10,6 +10,16 @@ class UserRepository(val articleDao: ArticleDao) {
 
     fun observeFavorites(): Flow<List<ArticleEntity>> {
         return articleDao.observeFavorites()
+    }
+
+    suspend fun addFavorite(id: String) {
+        val article = articleDao.getArticle(id)
+        articleDao.insertFavorite(article)
+    }
+
+    suspend fun removeFavorite(id: String) {
+        val article = articleDao.getArticle(id)
+        articleDao.removeFromFavorites(article)
     }
 
 }

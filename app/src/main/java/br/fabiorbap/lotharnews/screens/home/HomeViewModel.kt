@@ -8,6 +8,7 @@ import br.fabiorbap.lotharnews.common.network.response.Result
 import br.fabiorbap.lotharnews.common.network.response.mapToError
 import br.fabiorbap.lotharnews.article.usecase.GetArticlesUseCase
 import br.fabiorbap.lotharnews.article.usecase.ObserveArticlesUseCase
+import br.fabiorbap.lotharnews.user.usecase.ToggleFavoriteUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -17,7 +18,8 @@ import org.koin.android.annotation.KoinViewModel
 @KoinViewModel
 class HomeViewModel(
     private val getArticlesUseCase: GetArticlesUseCase,
-    private val observeArticlesUseCase: ObserveArticlesUseCase
+    private val observeArticlesUseCase: ObserveArticlesUseCase,
+    private val toggleFavoriteUseCase: ToggleFavoriteUseCase,
 ) : ViewModel() {
 
     private val _uiState: MutableStateFlow<HomeState> = MutableStateFlow(HomeState())
@@ -35,6 +37,7 @@ class HomeViewModel(
     fun handleIntent(intent: HomeIntent) {
         when(intent) {
             HomeIntent.GetNews -> getArticles()
+            is HomeIntent.FavoriteIconClicked -> onFavoriteClick(intent.id)
         }
     }
 
@@ -60,6 +63,10 @@ class HomeViewModel(
             articles = it
             updateState()
         }
+    }
+
+    private fun onFavoriteClick(id: String) = viewModelScope.launch {
+        toggleFavoriteUseCase(id)
     }
 
     private fun updateState() {

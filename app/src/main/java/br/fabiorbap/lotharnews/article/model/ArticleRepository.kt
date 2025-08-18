@@ -11,7 +11,7 @@ class ArticleRepository(private val articleDao: ArticleDao,
     suspend fun getArticles() {
         val articles = lotharNewsApiService.getAllNews().articles
         val articleEntities = articles?.toEntities() ?: listOf()
-        articleDao.insertArticles(articleEntities)
+        articleDao.updateArticles(articleEntities)
     }
 
     fun observeArticles(): Flow<List<ArticleEntity>> {

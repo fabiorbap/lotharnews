@@ -1,6 +1,6 @@
 package br.fabiorbap.lotharnews.article.model
 
-import java.util.UUID
+import br.fabiorbap.lotharnews.common.util.getNewId
 
 fun ArticleResponse.toEntity(): ArticleEntity {
     return ArticleEntity(
@@ -8,7 +8,7 @@ fun ArticleResponse.toEntity(): ArticleEntity {
         author = author,
         title = title,
         description = description,
-        url = url ?: UUID.randomUUID().toString(),
+        url = url ?: getNewId(),
         urlToImage = urlToImage,
         publishedAt = publishedAt,
         content = content,
@@ -34,7 +34,8 @@ fun ArticleEntity.toModel(): Article {
         description = description,
         urlToImage = urlToImage,
         publishedAt = publishedAt,
-        content = content
+        content = content,
+        isFavorite = isFavorite
     )
 }
 
