@@ -3,6 +3,7 @@ package br.fabiorbap.lotharnews.common.util
 import android.nfc.FormatException
 import android.util.Log
 import org.threeten.bp.ZonedDateTime
+import org.threeten.bp.format.DateTimeParseException
 import org.threeten.bp.format.TextStyle
 import java.util.Locale
 
@@ -20,7 +21,7 @@ fun String.formatIsoDate(): String {
             else -> "th"
         }
         return "$month $day$suffix $year"
-    } catch (e: FormatException) {
+    } catch (e: DateTimeParseException) {
         Log.e("Error parsing date", this)
         return ""
     }

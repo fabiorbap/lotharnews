@@ -9,7 +9,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
-fun showError(
+fun Error(
     snackbarHostState: SnackbarHostState,
     context: Context,
     scope: CoroutineScope,

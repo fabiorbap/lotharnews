@@ -101,6 +101,8 @@ dependencies {
     implementation(libs.room.runtime)
     ksp(libs.room.compiler)
     implementation(libs.room.ktx)
+    testImplementation(libs.google.truth)
+    testImplementation(libs.mockK)
 
 }
 

@@ -8,7 +8,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.fabiorbap.lotharnews.R
-import br.fabiorbap.lotharnews.common.util.showError
+import br.fabiorbap.lotharnews.common.util.Error
 import br.fabiorbap.lotharnews.screens.common.ArticlesList
 import br.fabiorbap.lotharnews.screens.common.component.LoadingFullscreen
 import br.fabiorbap.lotharnews.screens.common.component.placeholder.Placeholder
@@ -58,7 +58,7 @@ private fun Error(
     scope: CoroutineScope,
     onRetry: () -> Unit
 ) {
-    showError(
+    Error(
         snackbarHostState = snackbarHostState, context = LocalContext.current,
         scope = scope,
         onConnectionError = {
