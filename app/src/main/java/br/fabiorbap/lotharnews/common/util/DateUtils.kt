@@ -1,6 +1,5 @@
 package br.fabiorbap.lotharnews.common.util
 
-import android.nfc.FormatException
 import android.util.Log
 import org.threeten.bp.ZonedDateTime
 import org.threeten.bp.format.DateTimeParseException

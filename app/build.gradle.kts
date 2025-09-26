@@ -103,6 +103,7 @@ dependencies {
     implementation(libs.room.ktx)
     testImplementation(libs.google.truth)
     testImplementation(libs.mockK)
+    testImplementation(libs.kotlinx.coroutines.test)
 
 }
 
