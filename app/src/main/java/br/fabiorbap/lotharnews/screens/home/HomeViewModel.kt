@@ -36,7 +36,7 @@ class HomeViewModel(
 
     fun handleIntent(intent: HomeIntent) {
         when(intent) {
-            HomeIntent.GetNews -> getArticles()
+            HomeIntent.GetArticles -> getArticles()
             is HomeIntent.FavoriteIconClicked -> onFavoriteClick(intent.id)
         }
     }

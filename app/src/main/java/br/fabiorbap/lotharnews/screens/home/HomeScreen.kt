@@ -28,7 +28,7 @@ fun HomeScreen(
     val scope = rememberCoroutineScope()
     val onRetry = {
         homeViewModel.handleIntent(
-            HomeIntent.GetNews
+            HomeIntent.GetArticles
         )
     }
     val onFavoriteIconClick: (String) -> Unit = { id ->
