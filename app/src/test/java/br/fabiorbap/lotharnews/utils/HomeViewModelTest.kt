@@ -14,9 +14,13 @@ import io.mockk.MockKAnnotations
 import io.mockk.clearMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.slot
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
@@ -54,6 +58,27 @@ class HomeViewModelTest {
     @Before
     fun setup() {
         MockKAnnotations.init(this)
+    }
+
+    @Test
+    fun observeArticles_articlesUpdated_stateUpdated() = runTest {
+        val deferrable = CompletableDeferred<Unit>()
+        coEvery { observeArticlesUseCase() } returns flow {
+            emit(emptyList())
+            deferrable.await()
+            emit(mockArticles)
+        }
+
+        initializeViewModel()
+
+        advanceUntilIdle()
+
+        assertEquals(emptyList<Article>(), SUT.uiState.value.articles)
+
+        deferrable.complete(Unit)
+        advanceUntilIdle()
+
+        assertEquals(mockArticles, SUT.uiState.value.articles)
     }
 
     @Test
@@ -139,7 +164,7 @@ class HomeViewModelTest {
 
         advanceUntilIdle()
 
-        clearMocks(getArticlesUseCase) //getArticlesUseCase is called when the VM initializes, so we want to clear this interaction
+        clearMocks(getArticlesUseCase, answers = false) //getArticlesUseCase is called when the VM initializes, so we want to clear this interaction
 
         SUT.handleIntent(HomeIntent.GetArticles)
 
@@ -148,13 +173,11 @@ class HomeViewModelTest {
         coVerify(exactly = 1) { getArticlesUseCase() }
     }
 
-    //handleIntent calls toggleFavorite
-
     @Test
     fun handleIntent_setFavoriteIntentReceived_toggleFavoriteCalled() = runTest {
         initializeViewModel()
 
-        val id = ""
+        val id = "id"
 
         SUT.handleIntent(HomeIntent.FavoriteIconClicked(id))
 
@@ -164,8 +187,6 @@ class HomeViewModelTest {
 
     }
 
-    //handleIntent receives intent to favorite article
-    //handleIntent receives intent to unfavorite article
 
     private fun initializeViewModel() {
         SUT = HomeViewModel(getArticlesUseCase, observeArticlesUseCase, toggleFavoriteArticleUseCase)
