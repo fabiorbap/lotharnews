@@ -1,4 +1,4 @@
-package br.fabiorbap.lotharnews.utils
+package br.fabiorbap.lotharnews.utils.common
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

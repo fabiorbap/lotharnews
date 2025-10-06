@@ -1,7 +1,6 @@
-package br.fabiorbap.lotharnews.utils
+package br.fabiorbap.lotharnews.utils.home
 
 import br.fabiorbap.lotharnews.article.model.Article
-import br.fabiorbap.lotharnews.article.model.Source
 import br.fabiorbap.lotharnews.article.usecase.GetArticlesUseCase
 import br.fabiorbap.lotharnews.article.usecase.ObserveArticlesUseCase
 import br.fabiorbap.lotharnews.common.network.response.Error
@@ -10,25 +9,22 @@ import br.fabiorbap.lotharnews.common.network.response.Result
 import br.fabiorbap.lotharnews.screens.home.HomeIntent
 import br.fabiorbap.lotharnews.screens.home.HomeViewModel
 import br.fabiorbap.lotharnews.user.usecase.ToggleFavoriteUseCase
+import br.fabiorbap.lotharnews.utils.common.MainDispatcherRule
+import br.fabiorbap.lotharnews.utils.common.mockArticles
 import io.mockk.MockKAnnotations
 import io.mockk.clearMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.every
 import io.mockk.impl.annotations.RelaxedMockK
-import io.mockk.slot
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.ResponseBody.Companion.toResponseBody
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertTrue
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -103,7 +99,7 @@ class HomeViewModelTest {
     @Test
     fun getArticles_initialState_articlesReturned() = runTest {
         initializeViewModel()
-        mockFlowWithArticlesOnObserveArticles()
+        mockSuccessOnObserveArticles()
         mockSuccessOnGetArticles()
 
         advanceUntilIdle()
@@ -164,7 +160,10 @@ class HomeViewModelTest {
 
         advanceUntilIdle()
 
-        clearMocks(getArticlesUseCase, answers = false) //getArticlesUseCase is called when the VM initializes, so we want to clear this interaction
+        clearMocks(
+            getArticlesUseCase,
+            answers = false
+        )
 
         SUT.handleIntent(HomeIntent.GetArticles)
 
@@ -187,12 +186,40 @@ class HomeViewModelTest {
 
     }
 
+    @Test
+    fun handleIntent_retryGetArticlesAttempted_articlesReturned() = runTest {
+        mockGenericErrorOnGetArticles()
+        val deferrable = CompletableDeferred<Unit>()
+        coEvery { observeArticlesUseCase() } returns flow {
+            emit(emptyList())
+            deferrable.await()
+            emit(mockArticles)
+        }
 
-    private fun initializeViewModel() {
-        SUT = HomeViewModel(getArticlesUseCase, observeArticlesUseCase, toggleFavoriteArticleUseCase)
+        initializeViewModel()
+
+        advanceUntilIdle()
+
+        mockSuccessOnGetArticles()
+
+        SUT.handleIntent(HomeIntent.GetArticles)
+
+        deferrable.complete(Unit)
+        advanceUntilIdle()
+
+        with(SUT.uiState.value) {
+            assertEquals(mockArticles, articles)
+            assertFalse(isLoading)
+            assertEquals(null, error)
+        }
     }
 
-    private fun mockFlowWithArticlesOnObserveArticles() {
+    private fun initializeViewModel() {
+        SUT =
+            HomeViewModel(getArticlesUseCase, observeArticlesUseCase, toggleFavoriteArticleUseCase)
+    }
+
+    private fun mockSuccessOnObserveArticles() {
         coEvery { observeArticlesUseCase() } returns flowOf(mockArticles)
     }
 
@@ -213,8 +240,12 @@ class HomeViewModelTest {
 
     private fun mockServerUnavailableOnGetArticles() {
         val errorBody = "".toResponseBody("application/json".toMediaTypeOrNull())
-        val serverUnavailableException = HttpException(Response.error<Any>(HttpErrorCodes.ServerUnavailable.errorCode,
-            errorBody))
+        val serverUnavailableException = HttpException(
+            Response.error<Any>(
+                HttpErrorCodes.ServerUnavailable.errorCode,
+                errorBody
+            )
+        )
         coEvery { getArticlesUseCase() } returns Result.Failure(serverUnavailableException)
     }
 
@@ -222,33 +253,6 @@ class HomeViewModelTest {
         val errorBody = "".toResponseBody("application/json".toMediaTypeOrNull())
         val genericException = HttpException(Response.error<Any>(400, errorBody))
         coEvery { getArticlesUseCase() } returns Result.Failure(genericException)
-    }
-
-    companion object {
-        val mockArticles = listOf(
-            Article(
-                source = Source(null, "BBC News"),
-                null,
-                "Chris Mason: How Polanski's Green leadership could impact UK politics",
-                "Zack Polanski's landslide victory is the latest example of a shake up in the country's politics.",
-                "https://www.bbc.com/news/articles/c9d0d32q0eno",
-                "https://ichef.bbci.co.uk/news/1024/branded_news/9ea5/live/3d188cc0-8847-11f0-b391-6936825093bd.jpg",
-                "2025-09-02T22:49:49Z",
-                "Chris MasonPolitical editor\r\nZack Polanski's sweary, brash and blunt victory video on social media said everything about how the Green Party of England and Wales is under new leadership.\r\nHis landsli… [+2577 chars]",
-                false
-            ),
-            Article(
-                source = Source(null, "BBC News"),
-                null,
-                "Chris Mason: How Polanski's Green leadership could impact UK politics",
-                "Zack Polanski's landslide victory is the latest example of a shake up in the country's politics.",
-                "https://www.bbc.com/news/articles/c9d0d32q0eno",
-                "https://ichef.bbci.co.uk/news/1024/branded_news/9ea5/live/3d188cc0-8847-11f0-b391-6936825093bd.jpg",
-                "2025-09-02T22:49:49Z",
-                "Chris MasonPolitical editor\r\nZack Polanski's sweary, brash and blunt victory video on social media said everything about how the Green Party of England and Wales is under new leadership.\r\nHis landsli… [+2577 chars]",
-                false
-            )
-        )
     }
 
 }

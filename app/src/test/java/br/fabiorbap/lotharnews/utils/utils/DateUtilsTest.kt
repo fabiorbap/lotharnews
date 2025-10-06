@@ -1,10 +1,10 @@
-package br.fabiorbap.lotharnews.utils
+package br.fabiorbap.lotharnews.utils.utils
 
 import android.util.Log
 import br.fabiorbap.lotharnews.common.util.formatIsoDate
 import io.mockk.every
 import io.mockk.mockkStatic
-import org.junit.Assert.assertEquals
+import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
@@ -18,7 +18,7 @@ class DateUtilsTest {
         val formattedDate = parameterDate.formatIsoDate()
         val correctDate = "August 8th 2025"
 
-        assertEquals(formattedDate, correctDate)
+        Assert.assertEquals(formattedDate, correctDate)
     }
 
     @Test
@@ -27,7 +27,7 @@ class DateUtilsTest {
         val formattedDate = parameterDate.formatIsoDate()
         val correctDate = "August 1st 2025"
 
-        assertEquals(formattedDate, correctDate)
+        Assert.assertEquals(formattedDate, correctDate)
     }
 
     @Test
@@ -36,7 +36,7 @@ class DateUtilsTest {
         val formattedDate = parameterDate.formatIsoDate()
         val correctDate = "August 2nd 2025"
 
-        assertEquals(formattedDate, correctDate)
+        Assert.assertEquals(formattedDate, correctDate)
     }
 
     @Test
@@ -46,7 +46,7 @@ class DateUtilsTest {
         val parameterDate = "2025-08-02T08:15:"
         val formattedDate = parameterDate.formatIsoDate()
 
-        assertEquals(formattedDate, "")
+        Assert.assertEquals(formattedDate, "")
     }
 
 }

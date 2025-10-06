@@ -104,6 +104,8 @@ dependencies {
     testImplementation(libs.google.truth)
     testImplementation(libs.mockK)
     testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.turbine)
+    testImplementation(libs.kotlin.test)
 
 }
 

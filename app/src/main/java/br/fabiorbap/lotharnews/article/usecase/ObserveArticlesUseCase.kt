@@ -10,7 +10,7 @@ import org.koin.core.annotation.Factory
 @Factory
 class ObserveArticlesUseCase(private val articleRepository: ArticleRepository) {
 
-    operator fun invoke(): Flow<List<Article>?> {
+    operator fun invoke(): Flow<List<Article>> {
         return articleRepository.observeArticles().map { it.toModels() }
     }
 }
