@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     id("kotlin-kapt")
     alias(libs.plugins.google.ksp)
+    alias(libs.plugins.detekt)
     idea
     kotlin("plugin.serialization") version "2.0.21"
 }
@@ -29,7 +30,8 @@ android {
 
         val properties = Properties()
         properties.load(project.rootProject.file("local.properties").inputStream())
-        buildConfigField("String", "API_KEY", properties.getProperty("API_KEY"))
+        buildConfigField("String", "API_URL", "\"https://newsapi.org\"")
+        buildConfigField("String", "API_KEY", "\"${properties.getProperty("API_KEY")}\"")
 
     }
 
@@ -56,6 +58,10 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.15"
     }
+
+    ksp {
+        arg("room.schemaLocation", "$projectDir/schemas")
+    }
 }
 
 dependencies {
@@ -79,12 +85,30 @@ dependencies {
     implementation(libs.koin.android)
     implementation(libs.koin.compose)
     implementation(libs.koin.compose.navigation)
-    implementation(libs.kotlin.ksp.compiler)
-    implementation(libs.kotlin.ksp.annotations)
+    ksp(libs.koin.ksp.compiler)
+    implementation(libs.koin.ksp.annotations)
     implementation(libs.androidx.compose.navigation)
     implementation(libs.kotlin.serialization)
+    implementation(libs.retrofit)
+    implementation(libs.gson)
+    implementation(libs.okhttp)
+    implementation(libs.okhttp.logging)
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network)
+    implementation(libs.date.threetenabp)
+    implementation(libs.compose.adaptive)
+    implementation(libs.compose.adaptive.layout)
+    implementation(libs.room.runtime)
+    ksp(libs.room.compiler)
+    implementation(libs.room.ktx)
+    testImplementation(libs.google.truth)
+    testImplementation(libs.mockK)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.turbine)
+    testImplementation(libs.kotlin.test)
 
 }
+
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)

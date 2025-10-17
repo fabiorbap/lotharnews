@@ -14,6 +14,17 @@ koinCompiler = "2.0.0"
 googleKsp = "2.0.21-1.0.28"
 composeNavigation = "2.8.9"
 kotlinSerialization = "1.7.3"
+retrofit = "2.11.0"
+okhttp = "4.12.0"
+detekt = "1.23.8"
+coil = "3.2.0"
+threeTenABP = "1.4.6"
+composeAdaptive = "1.1.0"
+room = "2.7.2"
+googleTruth = "1.1.3"
+mockK = "1.14.5"
+kotlinxCoroutinesTest = "1.10.2"
+turbine = "1.2.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -34,10 +45,27 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
 koin-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin" }
 koin-compose-navigation = { group = "io.insert-koin", name = "koin-androidx-compose-navigation", version.ref = "koin" }
-kotlin-ksp-annotations = { group = "io.insert-koin", name = "koin-annotations", version.ref = "koinCompiler" }
-kotlin-ksp-compiler = { group = "io.insert-koin", name = "koin-ksp-compiler", version.ref = "koinCompiler"}
+koin-ksp-annotations = { group = "io.insert-koin", name = "koin-annotations", version.ref = "koinCompiler" }
+koin-ksp-compiler = { group = "io.insert-koin", name = "koin-ksp-compiler", version.ref = "koinCompiler"}
 androidx-compose-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "composeNavigation" }
 kotlin-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinSerialization" }
+retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
+okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
+okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
+coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil"}
+coil-network = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil"}
+date-threetenabp = {group = "com.jakewharton.threetenabp", name = "threetenabp", version.ref = "threeTenABP"}
+compose-adaptive = { group = "androidx.compose.material3.adaptive", name = "adaptive", version.ref = "composeAdaptive" }
+compose-adaptive-layout = { group = "androidx.compose.material3.adaptive", name = "adaptive-layout", version.ref = "composeAdaptive" }
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room"}
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room"}
+room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room"}
+google-truth  = { group = "com.google.truth", name = "truth", version.ref = "googleTruth"}
+mockK = { group = "io.mockk", name = "mockk", version.ref = "mockK"}
+kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
+turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine"}
+kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlin" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
@@ -45,4 +73,6 @@ android-library = { id = "com.android.library", version.ref = "androidGradlePlug
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 google-ksp = { id = "com.google.devtools.ksp", version.ref = "googleKsp" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+
 

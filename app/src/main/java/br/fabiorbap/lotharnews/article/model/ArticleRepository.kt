@@ -1,0 +1,25 @@
+package br.fabiorbap.lotharnews.article.model
+
+import br.fabiorbap.lotharnews.common.network.LotharNewsApiService
+import kotlinx.coroutines.flow.Flow
+import org.koin.core.annotation.Single
+
+@Single
+class ArticleRepository(private val articleDao: ArticleDao,
+                        private val lotharNewsApiService: LotharNewsApiService) {
+
+    suspend fun getArticles() {
+        val articles = lotharNewsApiService.getAllNews().articles
+        val articleEntities = articles?.toEntities() ?: listOf()
+        articleDao.updateArticles(articleEntities)
+    }
+
+    fun observeArticles(): Flow<List<ArticleEntity>> {
+        return articleDao.observeArticles()
+    }
+
+    suspend fun getArticle(id: String): Article {
+        return articleDao.getArticle(id).toModel()
+    }
+
+}
