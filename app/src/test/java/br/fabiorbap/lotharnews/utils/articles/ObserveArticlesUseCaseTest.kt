@@ -30,7 +30,7 @@ class ObserveArticlesUseCaseTest {
     lateinit var articleRepository: ArticleRepository
 
     @InjectMockKs
-    lateinit var observeArticlesUseCase: ObserveArticlesUseCase
+    lateinit var SUT: ObserveArticlesUseCase
 
     @Before
     fun setup() {
@@ -41,7 +41,7 @@ class ObserveArticlesUseCaseTest {
     fun observeArticles_emptyArticleList_emptyListReturned() = runTest {
         coEvery { articleRepository.observeArticles() } returns flowOf(emptyList())
 
-        observeArticlesUseCase().test {
+        SUT().test {
             val result = awaitItem()
             assertEquals(emptyList<Article>(), result)
             awaitComplete()
@@ -52,7 +52,7 @@ class ObserveArticlesUseCaseTest {
     fun observeArticles_newArticles_articlesMappedReturned() = runTest {
         coEvery { articleRepository.observeArticles() } returns flowOf(mockArticleEntities)
 
-        observeArticlesUseCase().test {
+        SUT().test {
             val result = awaitItem()
             assertEquals(mockArticles, result)
             awaitComplete()
@@ -63,7 +63,7 @@ class ObserveArticlesUseCaseTest {
     fun observeArticles_multipleArticleEmissions_multipleArticleEmissionsMapped() = runTest {
         coEvery { articleRepository.observeArticles() } returns flowOf(mockArticleEntities, mockArticleEntities)
 
-        observeArticlesUseCase().test {
+        SUT().test {
             val firstArticleBatch = awaitItem()
             assertEquals(mockArticles, firstArticleBatch)
             val secondArticleBatch = awaitItem()

@@ -29,7 +29,7 @@ class GetArticlesUseCaseTest {
     lateinit var articleRepository: ArticleRepository
 
     @InjectMockKs
-    lateinit var getArticlesUseCase: GetArticlesUseCase
+    lateinit var SUT: GetArticlesUseCase
 
     @Before
     fun setup() {
@@ -40,7 +40,7 @@ class GetArticlesUseCaseTest {
     fun getArticles_articlesAvailable_successReturned() = runTest {
         coEvery { articleRepository.getArticles() } returns Unit
 
-        val result = getArticlesUseCase()
+        val result = SUT()
 
         assertEquals(Result.Success, result)
     }
@@ -50,7 +50,7 @@ class GetArticlesUseCaseTest {
         val exception = Exception()
         coEvery { articleRepository.getArticles() } throws exception
 
-        val result = getArticlesUseCase()
+        val result = SUT()
 
         assertEquals(Result.Failure(exception), result)
     }
