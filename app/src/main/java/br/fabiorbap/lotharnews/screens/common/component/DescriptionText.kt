@@ -11,10 +11,12 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun DescriptionText(text: String) {
-    Text(modifier = Modifier.padding(bottom = 16.dp), text = text,
+    Text(
+        modifier = Modifier.padding(bottom = 16.dp),
+        text = text,
         style = MaterialTheme.typography.bodyMedium,
         color = MaterialTheme.colorScheme.secondary,
         textAlign = TextAlign.Start,
-        fontStyle = FontStyle.Italic
+        fontStyle = FontStyle.Italic,
     )
 }

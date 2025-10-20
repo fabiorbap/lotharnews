@@ -14,9 +14,12 @@ import br.fabiorbap.lotharnews.common.util.isSelected
 import br.fabiorbap.lotharnews.screens.main.navigation.Route
 
 @Composable
-fun BottomNav(onClick: (route: Route) -> Unit, currentDestination: NavDestination?) {
+fun BottomNav(
+    onClick: (route: Route) -> Unit,
+    currentDestination: NavDestination?,
+) {
     NavigationBar(
-        containerColor = MaterialTheme.colorScheme.surfaceContainer
+        containerColor = MaterialTheme.colorScheme.surfaceContainer,
     ) {
         val selectedColor = MaterialTheme.colorScheme.primary
         val unselectedColor = MaterialTheme.colorScheme.onSurfaceVariant
@@ -29,23 +32,24 @@ fun BottomNav(onClick: (route: Route) -> Unit, currentDestination: NavDestinatio
                 icon = {
                     Icon(
                         imageVector = ImageVector.vectorResource(item.icon),
-                        contentDescription = item.name
+                        contentDescription = item.name,
                     )
                 },
                 label = {
                     Text(
-                        item.name
+                        item.name,
                     )
                 },
-                colors = NavigationBarItemColors(
-                    selectedIconColor = selectedColor,
-                    unselectedIconColor = unselectedColor,
-                    disabledIconColor = unselectedColor,
-                    selectedTextColor = selectedColor,
-                    unselectedTextColor = unselectedColor,
-                    disabledTextColor = unselectedColor,
-                    selectedIndicatorColor = MaterialTheme.colorScheme.primaryContainer
-                )
+                colors =
+                    NavigationBarItemColors(
+                        selectedIconColor = selectedColor,
+                        unselectedIconColor = unselectedColor,
+                        disabledIconColor = unselectedColor,
+                        selectedTextColor = selectedColor,
+                        unselectedTextColor = unselectedColor,
+                        disabledTextColor = unselectedColor,
+                        selectedIndicatorColor = MaterialTheme.colorScheme.primaryContainer,
+                    ),
             )
         }
     }

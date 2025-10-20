@@ -14,8 +14,8 @@ import org.koin.android.annotation.KoinViewModel
 @KoinViewModel
 class DetailViewModel(
     savedStateHandle: SavedStateHandle,
-    val getArticleUseCase: GetArticleUseCase): ViewModel() {
-
+    val getArticleUseCase: GetArticleUseCase,
+) : ViewModel() {
     private val id: String? = savedStateHandle.get<String>("id")
     private lateinit var article: Article
     private val _uiState = MutableStateFlow(DetailState())
@@ -25,17 +25,17 @@ class DetailViewModel(
         getArticle()
     }
 
-    private fun getArticle() = viewModelScope.launch {
-        article = getArticleUseCase(id ?: "")
-        updateState()
-    }
+    private fun getArticle() =
+        viewModelScope.launch {
+            article = getArticleUseCase(id.orEmpty())
+            updateState()
+        }
 
-    private fun updateState(){
+    private fun updateState() {
         _uiState.update {
             it.copy(
-                article = article
+                article = article,
             )
         }
     }
-
 }

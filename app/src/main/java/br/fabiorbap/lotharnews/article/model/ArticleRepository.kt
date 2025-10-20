@@ -5,21 +5,17 @@ import kotlinx.coroutines.flow.Flow
 import org.koin.core.annotation.Single
 
 @Single
-class ArticleRepository(private val articleDao: ArticleDao,
-                        private val lotharNewsApiService: LotharNewsApiService) {
-
+class ArticleRepository(
+    private val articleDao: ArticleDao,
+    private val lotharNewsApiService: LotharNewsApiService,
+) {
     suspend fun getArticles() {
         val articles = lotharNewsApiService.getAllNews().articles
-        val articleEntities = articles?.toEntities() ?: listOf()
+        val articleEntities = articles?.toEntities().orEmpty()
         articleDao.updateArticles(articleEntities)
     }
 
-    fun observeArticles(): Flow<List<ArticleEntity>> {
-        return articleDao.observeArticles()
-    }
+    fun observeArticles(): Flow<List<ArticleEntity>> = articleDao.observeArticles()
 
-    suspend fun getArticle(id: String): Article {
-        return articleDao.getArticle(id).toModel()
-    }
-
+    suspend fun getArticle(id: String): Article = articleDao.getArticle(id).toModel()
 }

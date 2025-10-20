@@ -22,7 +22,6 @@ import org.junit.runners.JUnit4
 
 @RunWith(JUnit4::class)
 class ObserveArticlesUseCaseTest {
-
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
@@ -38,38 +37,40 @@ class ObserveArticlesUseCaseTest {
     }
 
     @Test
-    fun observeArticles_emptyArticleList_emptyListReturned() = runTest {
-        coEvery { articleRepository.observeArticles() } returns flowOf(emptyList())
+    fun observeArticles_emptyArticleList_emptyListReturned() =
+        runTest {
+            coEvery { articleRepository.observeArticles() } returns flowOf(emptyList())
 
-        observeArticlesUseCase().test {
-            val result = awaitItem()
-            assertEquals(emptyList<Article>(), result)
-            awaitComplete()
+            observeArticlesUseCase().test {
+                val result = awaitItem()
+                assertEquals(emptyList<Article>(), result)
+                awaitComplete()
+            }
         }
-    }
 
     @Test
-    fun observeArticles_newArticles_articlesMappedReturned() = runTest {
-        coEvery { articleRepository.observeArticles() } returns flowOf(mockArticleEntities)
+    fun observeArticles_newArticles_articlesMappedReturned() =
+        runTest {
+            coEvery { articleRepository.observeArticles() } returns flowOf(mockArticleEntities)
 
-        observeArticlesUseCase().test {
-            val result = awaitItem()
-            assertEquals(mockArticles, result)
-            awaitComplete()
+            observeArticlesUseCase().test {
+                val result = awaitItem()
+                assertEquals(mockArticles, result)
+                awaitComplete()
+            }
         }
-    }
 
     @Test
-    fun observeArticles_multipleArticleEmissions_multipleArticleEmissionsMapped() = runTest {
-        coEvery { articleRepository.observeArticles() } returns flowOf(mockArticleEntities, mockArticleEntities)
+    fun observeArticles_multipleArticleEmissions_multipleArticleEmissionsMapped() =
+        runTest {
+            coEvery { articleRepository.observeArticles() } returns flowOf(mockArticleEntities, mockArticleEntities)
 
-        observeArticlesUseCase().test {
-            val firstArticleBatch = awaitItem()
-            assertEquals(mockArticles, firstArticleBatch)
-            val secondArticleBatch = awaitItem()
-            assertEquals(mockArticles, secondArticleBatch)
-            awaitComplete()
+            observeArticlesUseCase().test {
+                val firstArticleBatch = awaitItem()
+                assertEquals(mockArticles, firstArticleBatch)
+                val secondArticleBatch = awaitItem()
+                assertEquals(mockArticles, secondArticleBatch)
+                awaitComplete()
+            }
         }
-    }
-
 }

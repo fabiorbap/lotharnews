@@ -13,22 +13,24 @@ import java.util.concurrent.TimeUnit
 
 @Module
 class NetworkModule {
-
     companion object {
         private const val DEFAULT_TIMEOUT_SECONDS = 30L
     }
 
     @Single
     fun provideOkHttpClient(): OkHttpClient {
-        val logging = HttpLoggingInterceptor().apply {
-            level = if (BuildConfig.DEBUG) {
-                HttpLoggingInterceptor.Level.BODY
-            } else {
-                HttpLoggingInterceptor.Level.NONE
+        val logging =
+            HttpLoggingInterceptor().apply {
+                level =
+                    if (BuildConfig.DEBUG) {
+                        HttpLoggingInterceptor.Level.BODY
+                    } else {
+                        HttpLoggingInterceptor.Level.NONE
+                    }
             }
-        }
 
-        return OkHttpClient.Builder()
+        return OkHttpClient
+            .Builder()
             .addInterceptor(logging)
             .addInterceptor(AuthInterceptor())
             .connectTimeout(DEFAULT_TIMEOUT_SECONDS, TimeUnit.SECONDS)
@@ -38,17 +40,15 @@ class NetworkModule {
     }
 
     @Single
-    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
-        return Retrofit.Builder()
+    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit =
+        Retrofit
+            .Builder()
             .baseUrl(BuildConfig.API_URL)
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-    }
 
     @Single
-    fun provideLotharNewsApiService(retrofit: Retrofit): LotharNewsApiService {
-        return retrofit.create(LotharNewsApiService::class.java)
-    }
-
+    fun provideLotharNewsApiService(retrofit: Retrofit): LotharNewsApiService =
+        retrofit.create(LotharNewsApiService::class.java)
 }

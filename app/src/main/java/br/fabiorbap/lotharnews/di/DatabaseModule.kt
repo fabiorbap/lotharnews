@@ -9,19 +9,15 @@ import org.koin.core.annotation.Single
 
 @Module
 class DatabaseModule {
+    @Single
+    fun provideRoomDatabase(applicationContext: Context): ApplicationDatabase =
+        Room
+            .databaseBuilder(
+                applicationContext,
+                ApplicationDatabase::class.java,
+                "lothar-news-database",
+            ).build()
 
     @Single
-    fun provideRoomDatabase(applicationContext: Context): ApplicationDatabase {
-        return Room.databaseBuilder(
-            applicationContext,
-            ApplicationDatabase::class.java,
-            "lothar-news-database"
-        ).build()
-    }
-
-    @Single
-    fun provideArticleDao(applicationDatabase: ApplicationDatabase): ArticleDao {
-        return applicationDatabase.articleDao()
-    }
-
+    fun provideArticleDao(applicationDatabase: ApplicationDatabase): ArticleDao = applicationDatabase.articleDao()
 }

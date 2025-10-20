@@ -21,14 +21,13 @@ import org.koin.androidx.compose.koinViewModel
 fun HomeScreen(
     homeViewModel: HomeViewModel = koinViewModel(),
     snackbarHostState: SnackbarHostState,
-    onCardClick: (String) -> Unit
+    onCardClick: (String) -> Unit,
 ) {
-
     val state: HomeState by homeViewModel.uiState.collectAsStateWithLifecycle()
     val scope = rememberCoroutineScope()
     val onRetry = {
         homeViewModel.handleIntent(
-            HomeIntent.GetArticles
+            HomeIntent.GetArticles,
         )
     }
     val onFavoriteIconClick: (String) -> Unit = { id ->
@@ -37,16 +36,18 @@ fun HomeScreen(
 
     when {
         state.isLoading -> LoadingFullscreen()
-        state.articles?.isNotEmpty() == true -> ArticlesList(
-            state.articles,
-            onCardClick,
-            onFavoriteIconClick
-        )
+        state.articles?.isNotEmpty() == true ->
+            ArticlesList(
+                state.articles,
+                onCardClick,
+                onFavoriteIconClick,
+            )
 
-        state.articles?.isEmpty() == true -> Placeholder(
-            stringResource(R.string.home_empty_list_text),
-            buttonText = stringResource(R.string.refresh)
-        ) { onRetry() }
+        state.articles?.isEmpty() == true ->
+            Placeholder(
+                stringResource(R.string.home_empty_list_text),
+                buttonText = stringResource(R.string.refresh),
+            ) { onRetry() }
 
         state.error != null -> Error(snackbarHostState, scope, onRetry)
     }
@@ -56,10 +57,11 @@ fun HomeScreen(
 private fun Error(
     snackbarHostState: SnackbarHostState,
     scope: CoroutineScope,
-    onRetry: () -> Unit
+    onRetry: () -> Unit,
 ) {
     Error(
-        snackbarHostState = snackbarHostState, context = LocalContext.current,
+        snackbarHostState = snackbarHostState,
+        context = LocalContext.current,
         scope = scope,
         onConnectionError = {
             PlaceholderConnectionError {
@@ -70,6 +72,6 @@ private fun Error(
             PlaceholderGenericError {
                 onRetry()
             }
-        }
+        },
     )
 }

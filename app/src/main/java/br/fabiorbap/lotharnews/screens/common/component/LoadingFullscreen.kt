@@ -12,13 +12,13 @@ import androidx.compose.ui.Modifier
 @Composable
 fun LoadingFullscreen() {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight(),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    )
-    {
+        verticalArrangement = Arrangement.Center,
+    ) {
         CircularProgressIndicator()
     }
 }

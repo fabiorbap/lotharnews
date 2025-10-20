@@ -8,9 +8,8 @@ import kotlinx.coroutines.flow.map
 import org.koin.core.annotation.Factory
 
 @Factory
-data class ObserveFavoritesUseCase(val userRepository: UserRepository) {
-
-    operator fun invoke(): Flow<List<Article>> {
-        return userRepository.observeFavorites().map { it.toModels() }
-    }
+data class ObserveFavoritesUseCase(
+    val userRepository: UserRepository,
+) {
+    operator fun invoke(): Flow<List<Article>> = userRepository.observeFavorites().map { it.toModels() }
 }

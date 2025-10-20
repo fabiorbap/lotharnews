@@ -28,28 +28,33 @@ import br.fabiorbap.lotharnews.R
 import br.fabiorbap.lotharnews.screens.common.theme.Dimensions
 import coil3.compose.AsyncImage
 
-data class IconToggle(@DrawableRes val activateIcon: Int, @DrawableRes val inactivateIcon: Int)
-
 @Composable
 fun CardWithImageAndDescription(
-    modifier: Modifier = Modifier, image: String? = null, description: String,
-    caption: String, icons: IconToggle? = null, onContentClick: () -> Unit = {},
+    modifier: Modifier = Modifier,
+    image: String? = null,
+    description: String,
+    caption: String,
+    icons: IconToggle? = null,
+    onContentClick: () -> Unit = {},
     onIconClick: () -> Unit = {},
-    isIconActive: Boolean = false
+    isIconActive: Boolean = false,
 ) {
     Card(
-        modifier = modifier
-            .fillMaxWidth()
-            .wrapContentHeight(),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .wrapContentHeight(),
         colors = CardDefaults.cardColors(containerColor = Color.White),
-        onClick = onContentClick
+        onClick = onContentClick,
     ) {
-        if (image != null) ImageBlock(
-            modifier,
-            image,
-            if (isIconActive) icons?.activateIcon else icons?.inactivateIcon
-        ) {
-            onIconClick()
+        if (image != null) {
+            ImageBlock(
+                modifier,
+                image,
+                if (isIconActive) icons?.activateIcon else icons?.inactivateIcon,
+            ) {
+                onIconClick()
+            }
         }
         TextBlock(modifier, description, caption)
     }
@@ -57,56 +62,74 @@ fun CardWithImageAndDescription(
 
 @Composable
 private fun ImageBlock(
-    modifier: Modifier, image: String?, @DrawableRes icon: Int? = null,
-    onIconClick: () -> Unit
+    modifier: Modifier,
+    image: String?,
+    @DrawableRes icon: Int? = null,
+    onIconClick: () -> Unit,
 ) {
     Column {
         Box(
-            modifier = modifier
-                .align(Alignment.CenterHorizontally)
-                .fillMaxWidth()
+            modifier =
+                modifier
+                    .align(Alignment.CenterHorizontally)
+                    .fillMaxWidth(),
         ) {
             AsyncImage(
-                modifier = Modifier
-                    .fillMaxSize(),
+                modifier =
+                    Modifier
+                        .fillMaxSize(),
                 contentScale = ContentScale.FillBounds,
                 model = image,
-                contentDescription = stringResource(R.string.cd_card_with_image_image)
+                contentDescription = stringResource(R.string.cd_card_with_image_image),
             )
-            if (icon != null) Icon(
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .padding(
-                        top = Dimensions.DefaultSpacing.medium,
-                        end = Dimensions.DefaultSpacing.medium
-                    )
-                    .height(28.dp)
-                    .width(28.dp)
-                    .clickable { onIconClick() },
-                painter = painterResource(icon),
-                contentDescription = stringResource(R.string.cd_card_with_image_icon),
-                tint = Color.White,
-            )
+            if (icon != null) {
+                Icon(
+                    modifier =
+                        Modifier
+                            .align(Alignment.TopEnd)
+                            .padding(
+                                top = Dimensions.DefaultSpacing.medium,
+                                end = Dimensions.DefaultSpacing.medium,
+                            ).height(28.dp)
+                            .width(28.dp)
+                            .clickable { onIconClick() },
+                    painter = painterResource(icon),
+                    contentDescription = stringResource(R.string.cd_card_with_image_icon),
+                    tint = Color.White,
+                )
+            }
         }
     }
 }
 
 @Composable
-private fun TextBlock(modifier: Modifier, description: String, caption: String) {
+private fun TextBlock(
+    modifier: Modifier,
+    description: String,
+    caption: String,
+) {
     Column(modifier = modifier.padding(Dimensions.DefaultSpacing.medium)) {
         Text(
-            modifier = modifier
-                .wrapContentHeight()
-                .wrapContentWidth(),
+            modifier =
+                modifier
+                    .wrapContentHeight()
+                    .wrapContentWidth(),
             style = MaterialTheme.typography.titleMedium,
-            text = description
+            text = description,
         )
         Text(
-            modifier = modifier
-                .wrapContentWidth()
-                .wrapContentHeight()
-                .padding(top = Dimensions.DefaultSpacing.small),
-            style = MaterialTheme.typography.labelSmall, text = caption
-        )   
+            modifier =
+                modifier
+                    .wrapContentWidth()
+                    .wrapContentHeight()
+                    .padding(top = Dimensions.DefaultSpacing.small),
+            style = MaterialTheme.typography.labelSmall,
+            text = caption,
+        )
     }
 }
+
+data class IconToggle(
+    @DrawableRes val activateIcon: Int,
+    @DrawableRes val inactivateIcon: Int,
+)

@@ -22,7 +22,6 @@ import kotlin.test.assertFailsWith
 
 @RunWith(JUnit4::class)
 class ArticleRepositoryTest {
-
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
@@ -41,46 +40,52 @@ class ArticleRepositoryTest {
     }
 
     @Test
-    fun getArticles_called_apiCalled() = runTest {
-        articleRepository.getArticles()
-
-        coVerify { lotharNewsApiService.getAllNews() }
-    }
-
-    @Test
-    fun getArticles_called_daoCalled() = runTest {
-        articleRepository.getArticles()
-
-        coVerify { articleDao.updateArticles(any()) }
-    }
-
-    @Test
-    fun getArticles_apiError_daoNotCalled() = runTest {
-        mockAllNewsApiError()
-
-        assertFailsWith<Exception> {
+    fun getArticles_called_apiCalled() =
+        runTest {
             articleRepository.getArticles()
+
+            coVerify { lotharNewsApiService.getAllNews() }
         }
 
-        coVerify(exactly = 0) { articleDao.updateArticles(any()) }
-    }
+    @Test
+    fun getArticles_called_daoCalled() =
+        runTest {
+            articleRepository.getArticles()
+
+            coVerify { articleDao.updateArticles(any()) }
+        }
 
     @Test
-    fun getArticles_apiSuccess_articlesStoredInDao() = runTest {
-        mockAllNewsApiSuccess()
+    fun getArticles_apiError_daoNotCalled() =
+        runTest {
+            mockAllNewsApiError()
 
-        articleRepository.getArticles()
+            assertFailsWith<Exception> {
+                articleRepository.getArticles()
+            }
 
-        coVerify { articleDao.updateArticles(mockArticleEntities) }
-    }
+            coVerify(exactly = 0) { articleDao.updateArticles(any()) }
+        }
+
+    @Test
+    fun getArticles_apiSuccess_articlesStoredInDao() =
+        runTest {
+            mockAllNewsApiSuccess()
+
+            articleRepository.getArticles()
+
+            coVerify { articleDao.updateArticles(mockArticleEntities) }
+        }
 
     private fun mockAllNewsApiSuccess() {
-        coEvery { lotharNewsApiService.getAllNews() } returns NewsResponse(totalResults = 10,
-            mockArticlesResponse)
+        coEvery { lotharNewsApiService.getAllNews() } returns
+            NewsResponse(
+                totalResults = 10,
+                mockArticlesResponse,
+            )
     }
 
     private fun mockAllNewsApiError() {
         coEvery { lotharNewsApiService.getAllNews() } throws Exception()
     }
-
 }

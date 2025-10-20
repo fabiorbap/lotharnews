@@ -13,12 +13,13 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun ContentText(text: String) {
     Text(
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-            .padding(vertical = 8.dp),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .padding(vertical = 8.dp),
         text = text,
         style = MaterialTheme.typography.bodyLarge,
-        textAlign = TextAlign.Start
+        textAlign = TextAlign.Start,
     )
 }

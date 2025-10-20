@@ -21,7 +21,6 @@ import org.junit.runners.JUnit4
 
 @RunWith(JUnit4::class)
 class GetArticlesUseCaseTest {
-
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
@@ -37,22 +36,23 @@ class GetArticlesUseCaseTest {
     }
 
     @Test
-    fun getArticles_articlesAvailable_successReturned() = runTest {
-        coEvery { articleRepository.getArticles() } returns Unit
+    fun getArticles_articlesAvailable_successReturned() =
+        runTest {
+            coEvery { articleRepository.getArticles() } returns Unit
 
-        val result = getArticlesUseCase()
+            val result = getArticlesUseCase()
 
-        assertEquals(Result.Success, result)
-    }
+            assertEquals(Result.Success, result)
+        }
 
     @Test
-    fun getArticles_exceptionThrown_errorReturned() = runTest {
-        val exception = Exception()
-        coEvery { articleRepository.getArticles() } throws exception
+    fun getArticles_exceptionThrown_errorReturned() =
+        runTest {
+            val exception = Exception()
+            coEvery { articleRepository.getArticles() } throws exception
 
-        val result = getArticlesUseCase()
+            val result = getArticlesUseCase()
 
-        assertEquals(Result.Failure(exception), result)
-    }
-
+            assertEquals(Result.Failure(exception), result)
+        }
 }

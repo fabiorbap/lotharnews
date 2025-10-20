@@ -32,7 +32,6 @@ android {
         properties.load(project.rootProject.file("local.properties").inputStream())
         buildConfigField("String", "API_URL", "\"https://newsapi.org\"")
         buildConfigField("String", "API_KEY", "\"${properties.getProperty("API_KEY")}\"")
-
     }
 
     buildTypes {
@@ -40,7 +39,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
@@ -111,7 +110,6 @@ dependencies {
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.turbine)
     testImplementation(libs.kotlin.test)
-
 }
 
 java {
@@ -125,8 +123,8 @@ kapt {
 }
 
 ksp {
-    arg("KOIN_USE_COMPOSE_VIEWMODEL","true")
-    arg("KOIN_CONFIG_CHECK","true")
+    arg("KOIN_USE_COMPOSE_VIEWMODEL", "true")
+    arg("KOIN_CONFIG_CHECK", "true")
 }
 
 kotlin {

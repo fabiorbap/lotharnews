@@ -12,12 +12,10 @@ fun isNetworkAvailable(context: Context): Boolean {
         connectivityManager.getNetworkCapabilities(network) ?: return false
 
     return when {
-        activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
-        activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
-        activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
-        // for other device how are able to connect with Ethernet
+        activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
+        activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
+        activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) ||
         activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_BLUETOOTH) -> true
-        // for other devices that are able to connect with Bluetooth
         else -> false
     }
 }

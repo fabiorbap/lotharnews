@@ -8,5 +8,6 @@ import br.fabiorbap.lotharnews.R
 fun PlaceholderConnectionError(onRetry: () -> Unit) {
     Placeholder(
         text = stringResource(R.string.placeholder_connection_error),
-        icon = R.drawable.ic_connection_offline) { onRetry() }
+        icon = R.drawable.ic_connection_offline,
+    ) { onRetry() }
 }

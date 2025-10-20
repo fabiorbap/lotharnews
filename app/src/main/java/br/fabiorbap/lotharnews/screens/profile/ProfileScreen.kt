@@ -25,29 +25,33 @@ import br.fabiorbap.lotharnews.screens.common.component.MenuItem
 @Composable
 fun ProfileScreen(onFavoriteClick: () -> Unit) {
     Column(modifier = Modifier.fillMaxSize()) {
-        Spacer(Modifier.fillMaxHeight(0.2f))
+        val fillHeightTopPercentage = 0.2f
+        Spacer(Modifier.fillMaxHeight(fillHeightTopPercentage))
         Image(
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .clip(CircleShape)
-                .size(100.dp),
+            modifier =
+                Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .clip(CircleShape)
+                    .size(100.dp),
             painter = painterResource(R.drawable.ic_profile_placeholder),
             contentDescription = stringResource(R.string.cd_profile_placeholder_image),
-            contentScale = ContentScale.Crop
+            contentScale = ContentScale.Crop,
         )
         Text(
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .padding(top = 16.dp),
+            modifier =
+                Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(top = 16.dp),
             style = MaterialTheme.typography.titleLarge,
             text = "John Doe",
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
         )
-        Spacer(Modifier.fillMaxHeight(0.1f))
+        val fillHeightBottomPercentage = 0.1f
+        Spacer(Modifier.fillMaxHeight(fillHeightBottomPercentage))
         MenuItem(
             text = stringResource(R.string.profile_favorites_text),
             icon = R.drawable.ic_bookmark_saved,
-            onMenuItemClick = { onFavoriteClick() }
+            onMenuItemClick = { onFavoriteClick() },
         )
     }
 }

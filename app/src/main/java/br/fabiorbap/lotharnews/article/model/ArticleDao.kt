@@ -10,12 +10,11 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ArticleDao {
-
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertArticles(articles: List<ArticleEntity>)
 
     @Query(
-        "SELECT * FROM ArticleEntity"
+        "SELECT * FROM ArticleEntity",
     )
     fun observeArticles(): Flow<List<ArticleEntity>>
 
@@ -41,7 +40,7 @@ interface ArticleDao {
         article.urlToImage,
         article.url,
         article.isFavorite
-        FROM ArticleEntity article WHERE article.url = :id"""
+        FROM ArticleEntity article WHERE article.url = :id""",
     )
     suspend fun getArticle(id: String): ArticleEntity
 
@@ -58,7 +57,7 @@ interface ArticleDao {
     @Query(
         """
          SELECT * FROM ArticleEntity article WHERE isFavorite
-    """
+    """,
     )
     fun observeFavorites(): Flow<List<ArticleEntity>>
 
