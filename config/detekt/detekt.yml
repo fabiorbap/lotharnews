@@ -176,7 +176,7 @@ complexity:
     ignoreDeprecated: false
     ignorePrivate: false
     ignoreOverridden: false
-    ignoreAnnotatedFunctions: ['Composable', 'Preview']
+    ignoreAnnotatedFunctions: ['Preview']
 
 coroutines:
   active: true
@@ -335,6 +335,8 @@ naming:
     excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/androidUnitTest/**', '**/androidInstrumentedTest/**', '**/jsTest/**', '**/iosTest/**']
     functionPattern: '[a-z][a-zA-Z0-9]*'
     excludeClassPattern: '$^'
+    ignoreAnnotated:
+      - 'Composable'
   FunctionParameterNaming:
     active: true
     parameterPattern: '[a-z][A-Za-z0-9]*'
@@ -743,9 +745,6 @@ style:
     active: false
   UnusedImports:
     active: false
-  UnusedPrivateFunction:
-    active: true
-    ignoreAnnotated: ['Preview']
   UnusedParameter:
     active: true
     allowedNames: 'ignored|expected'
