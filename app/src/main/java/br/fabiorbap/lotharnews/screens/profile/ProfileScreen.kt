@@ -22,11 +22,13 @@ import androidx.compose.ui.unit.dp
 import br.fabiorbap.lotharnews.R
 import br.fabiorbap.lotharnews.screens.common.component.MenuItem
 
+private const val FILL_HEIGHT_TOP_PERCENTAGE = 0.2f
+private const val FILL_HEIGHT_BOTTOM_PERCENTAGE = 0.1f
+
 @Composable
 fun ProfileScreen(onFavoriteClick: () -> Unit) {
     Column(modifier = Modifier.fillMaxSize()) {
-        val fillHeightTopPercentage = 0.2f
-        Spacer(Modifier.fillMaxHeight(fillHeightTopPercentage))
+        Spacer(Modifier.fillMaxHeight(FILL_HEIGHT_TOP_PERCENTAGE))
         Image(
             modifier =
                 Modifier
@@ -46,8 +48,7 @@ fun ProfileScreen(onFavoriteClick: () -> Unit) {
             text = "John Doe",
             textAlign = TextAlign.Center,
         )
-        val fillHeightBottomPercentage = 0.1f
-        Spacer(Modifier.fillMaxHeight(fillHeightBottomPercentage))
+        Spacer(Modifier.fillMaxHeight(FILL_HEIGHT_BOTTOM_PERCENTAGE))
         MenuItem(
             text = stringResource(R.string.profile_favorites_text),
             icon = R.drawable.ic_bookmark_saved,

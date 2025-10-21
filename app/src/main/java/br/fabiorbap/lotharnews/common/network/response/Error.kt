@@ -5,11 +5,14 @@ import br.fabiorbap.lotharnews.common.network.response.Error.ServerUnavailable
 import br.fabiorbap.lotharnews.common.network.response.Error.Unauthorized
 import retrofit2.HttpException
 
+const val ERROR_CODE_UNAUTHORIZED = 401
+const val ERROR_CODE_SERVER_UNAVAILABLE = 500
+
 enum class HttpErrorCodes(
     val errorCode: Int,
 ) {
-    Unauthorized(401),
-    ServerUnavailable(500),
+    Unauthorized(ERROR_CODE_UNAUTHORIZED),
+    ServerUnavailable(ERROR_CODE_SERVER_UNAVAILABLE),
 }
 
 sealed class Error(

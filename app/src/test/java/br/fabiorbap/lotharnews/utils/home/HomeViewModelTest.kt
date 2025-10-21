@@ -1,6 +1,5 @@
 package br.fabiorbap.lotharnews.utils.home
 
-import android.annotation.SuppressLint
 import br.fabiorbap.lotharnews.article.model.Article
 import br.fabiorbap.lotharnews.article.usecase.GetArticlesUseCase
 import br.fabiorbap.lotharnews.article.usecase.ObserveArticlesUseCase
@@ -51,8 +50,7 @@ class HomeViewModelTest {
     @RelaxedMockK
     private lateinit var toggleFavoriteArticleUseCase: ToggleFavoriteUseCase
 
-    @SuppressLint
-    private lateinit var SUT: HomeViewModel
+    private lateinit var sut: HomeViewModel
 
     @Before
     fun setup() {
@@ -74,12 +72,12 @@ class HomeViewModelTest {
 
             advanceUntilIdle()
 
-            assertEquals(emptyList<Article>(), SUT.uiState.value.articles)
+            assertEquals(emptyList<Article>(), sut.uiState.value.articles)
 
             deferrable.complete(Unit)
             advanceUntilIdle()
 
-            assertEquals(mockArticles, SUT.uiState.value.articles)
+            assertEquals(mockArticles, sut.uiState.value.articles)
         }
 
     @Test
@@ -91,7 +89,7 @@ class HomeViewModelTest {
 
             advanceUntilIdle()
 
-            with(SUT.uiState.value) {
+            with(sut.uiState.value) {
                 assertTrue(isLoading)
                 assertEquals(null, error)
                 assertEquals(null, articles)
@@ -110,7 +108,7 @@ class HomeViewModelTest {
 
             advanceUntilIdle()
 
-            with(SUT.uiState.value) {
+            with(sut.uiState.value) {
                 assertFalse(isLoading)
                 assertEquals(mockArticles, articles)
                 assertEquals(null, error)
@@ -125,7 +123,7 @@ class HomeViewModelTest {
 
             advanceUntilIdle()
 
-            with(SUT.uiState.value) {
+            with(sut.uiState.value) {
                 assertFalse(isLoading)
                 assertEquals(null, articles)
                 assertEquals(Error.Unauthorized, error)
@@ -140,7 +138,7 @@ class HomeViewModelTest {
 
             advanceUntilIdle()
 
-            with(SUT.uiState.value) {
+            with(sut.uiState.value) {
                 assertFalse(isLoading)
                 assertEquals(null, articles)
                 assertEquals(Error.ServerUnavailable, error)
@@ -155,7 +153,7 @@ class HomeViewModelTest {
 
             advanceUntilIdle()
 
-            with(SUT.uiState.value) {
+            with(sut.uiState.value) {
                 assertFalse(isLoading)
                 assertEquals(null, articles)
                 assert(error is Error.GenericError)
@@ -174,7 +172,7 @@ class HomeViewModelTest {
                 answers = false,
             )
 
-            SUT.handleIntent(HomeIntent.GetArticles)
+            sut.handleIntent(HomeIntent.GetArticles)
 
             advanceUntilIdle()
 
@@ -188,7 +186,7 @@ class HomeViewModelTest {
 
             val id = "id"
 
-            SUT.handleIntent(HomeIntent.FavoriteIconClicked(id))
+            sut.handleIntent(HomeIntent.FavoriteIconClicked(id))
 
             advanceUntilIdle()
 
@@ -213,12 +211,12 @@ class HomeViewModelTest {
 
             mockSuccessOnGetArticles()
 
-            SUT.handleIntent(HomeIntent.GetArticles)
+            sut.handleIntent(HomeIntent.GetArticles)
 
             deferrable.complete(Unit)
             advanceUntilIdle()
 
-            with(SUT.uiState.value) {
+            with(sut.uiState.value) {
                 assertEquals(mockArticles, articles)
                 assertFalse(isLoading)
                 assertEquals(null, error)
@@ -226,7 +224,7 @@ class HomeViewModelTest {
         }
 
     private fun initializeViewModel() {
-        SUT =
+        sut =
             HomeViewModel(getArticlesUseCase, observeArticlesUseCase, toggleFavoriteArticleUseCase)
     }
 

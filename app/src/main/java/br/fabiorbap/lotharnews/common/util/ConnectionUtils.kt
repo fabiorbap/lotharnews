@@ -7,15 +7,13 @@ fun isNetworkAvailable(context: Context): Boolean {
     val connectivityManager =
         context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
-    val network = connectivityManager.activeNetwork ?: return false
-    val activeNetwork =
-        connectivityManager.getNetworkCapabilities(network) ?: return false
+    val network = connectivityManager.activeNetwork
+    val activeNetwork = network?.let { connectivityManager.getNetworkCapabilities(it) }
 
-    return when {
-        activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
-        activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
-        activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) ||
-        activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_BLUETOOTH) -> true
-        else -> false
-    }
+    return activeNetwork?.let {
+        it.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
+                it.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
+                it.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) ||
+                it.hasTransport(NetworkCapabilities.TRANSPORT_BLUETOOTH)
+    } ?: false
 }

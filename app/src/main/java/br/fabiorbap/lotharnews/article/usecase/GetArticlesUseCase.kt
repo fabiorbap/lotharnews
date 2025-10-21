@@ -2,6 +2,7 @@ package br.fabiorbap.lotharnews.article.usecase
 
 import br.fabiorbap.lotharnews.article.model.ArticleRepository
 import br.fabiorbap.lotharnews.common.network.response.Result
+import okio.IOException
 import org.koin.core.annotation.Factory
 
 @Factory
@@ -12,7 +13,7 @@ class GetArticlesUseCase(
         try {
             articleRepository.getArticles()
             Result.Success
-        } catch (e: Exception) {
+        } catch (e: IOException) {
             Result.Failure(e)
         }
 }

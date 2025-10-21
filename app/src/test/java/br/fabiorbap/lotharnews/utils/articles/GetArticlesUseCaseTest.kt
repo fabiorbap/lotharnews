@@ -12,6 +12,7 @@ import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.RelaxedMockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import okio.IOException
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
@@ -48,7 +49,7 @@ class GetArticlesUseCaseTest {
     @Test
     fun getArticles_exceptionThrown_errorReturned() =
         runTest {
-            val exception = Exception()
+            val exception = IOException()
             coEvery { articleRepository.getArticles() } throws exception
 
             val result = getArticlesUseCase()
