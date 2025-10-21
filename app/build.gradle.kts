@@ -7,6 +7,7 @@ plugins {
     id("kotlin-kapt")
     alias(libs.plugins.google.ksp)
     alias(libs.plugins.detekt)
+    id("jacoco")
     idea
     kotlin("plugin.serialization") version "2.0.21"
 }
@@ -35,6 +36,10 @@ android {
     }
 
     buildTypes {
+        debug {
+            enableUnitTestCoverage = true
+            enableAndroidTestCoverage = true
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(
@@ -110,6 +115,7 @@ dependencies {
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.turbine)
     testImplementation(libs.kotlin.test)
+    implementation(libs.jacoco)
 }
 
 java {
@@ -143,3 +149,77 @@ idea {
         generatedSourceDirs = generatedSourceDirs + file("build/generated/ksp/main/kotlin") + file("build/generated/ksp/test/kotlin")
     }
 }
+
+jacoco {
+    toolVersion = libs.jacoco.get().version ?: "0.8.14"
+}
+
+val fileFilter = listOf(
+    "**/R.class",
+    "**/R$*.class",
+    "**/BuildConfig.*",
+    "**/Manifest*.*",
+    "**/*Test*.*",
+    "android/**/*.*",
+    "**/*\$ViewInjector*.*",
+    "**/*\$ViewBinder*.*",
+    "**/databinding/*",
+    "**/android/databinding/*",
+    "**/androidx/databinding/*",
+    "**/di/module/*",
+    "**/*MapperImpl*.*",
+    "**/*\$Lambda$*.*",
+    "**/*Companion*.*",
+    "**/*Module*.*",
+    "**/*Dagger*.*",
+    "**/*Hilt*.*",
+    "**/*MembersInjector*.*",
+    "**/*_Factory*.*",
+    "**/*_Provide*Factory*.*",
+    "**/*Extensions*.*",
+    "**/org/koin/ksp/generated/**/*.*"
+)
+
+fun JacocoReportBase.configureJacoco() {
+    val debugTree = fileTree("${layout.buildDirectory.get()}/tmp/kotlin-classes/debug") {
+        exclude(fileFilter)
+    } + fileTree("${layout.buildDirectory.get()}/intermediates/javac/debug/classes") {
+        exclude(fileFilter)
+    }
+    val mainSrc = "${project.projectDir}/src/main/java"
+
+    sourceDirectories.setFrom(files(mainSrc))
+    classDirectories.setFrom(files(debugTree))
+    executionData.setFrom(fileTree(layout.buildDirectory.get()) {
+        include("**/testDebugUnitTest.exec")
+    })
+}
+
+tasks.register<JacocoReport>("jacocoTestReport") {
+    dependsOn("testDebugUnitTest")
+    finalizedBy("jacocoTestCoverageVerification")
+
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+        csv.required.set(false)
+    }
+
+    configureJacoco()
+}
+
+tasks.register<JacocoCoverageVerification>("jacocoTestCoverageVerification") {
+    dependsOn("jacocoTestReport")
+
+    configureJacoco()
+
+    violationRules {
+        rule {
+            limit {
+                minimum = 0.80.toBigDecimal()
+            }
+        }
+    }
+}
+
+
