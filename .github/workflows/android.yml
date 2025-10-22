@@ -28,10 +28,9 @@ jobs:
       env:
         LOCAL_PROPERTIES: ${{ secrets.LOCAL_PROPERTIES }}
 
-    - name: Install Android SDK Platform 34
+    - name: Install Android Components
       run: |
-        echo "Installing Android SDK components..."
-        yes | sdkmanager "platforms;android-34"
+        $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platforms;android-34" "build-tools;34.0.0"
 
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
