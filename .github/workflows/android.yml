@@ -28,6 +28,11 @@ jobs:
       env:
         LOCAL_PROPERTIES: ${{ secrets.LOCAL_PROPERTIES }}
 
+    - name: Install Android SDK Platform 34
+      run: |
+        echo "Installing Android SDK components..."
+        yes | sdkmanager "platforms;android-34"
+
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
       with:
