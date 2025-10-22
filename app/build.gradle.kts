@@ -146,7 +146,8 @@ idea {
     module {
         sourceDirs = sourceDirs + file("build/generated/ksp/main/kotlin")
         testSourceDirs = testSourceDirs + file("build/generated/ksp/test/kotlin")
-        generatedSourceDirs = generatedSourceDirs + file("build/generated/ksp/main/kotlin") + file("build/generated/ksp/test/kotlin")
+        generatedSourceDirs =
+            generatedSourceDirs + file("build/generated/ksp/main/kotlin") + file("build/generated/ksp/test/kotlin")
     }
 }
 
@@ -214,9 +215,11 @@ tasks.register<JacocoCoverageVerification>("jacocoTestCoverageVerification") {
     configureJacoco()
 
     violationRules {
+
         rule {
+
             limit {
-                minimum = 0.80.toBigDecimal()
+                minimum = "0.80".toBigDecimal()
             }
         }
     }
