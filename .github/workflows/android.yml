@@ -28,4 +28,4 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew build
     - name: Run automated tests with Gradle
-      run: ./gradlew test
+      run: ./gradlew jacocoTestReport
