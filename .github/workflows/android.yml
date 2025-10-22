@@ -39,6 +39,9 @@ jobs:
         yes | sdkmanager --licenses
         yes | sdkmanager "platforms;android-34" "build-tools;34.0.0"
 
+    - name: Verify installed Android SDK packages
+      run: sdkmanager --list | grep "platforms;android-"
+
     - name: Build with Gradle
       run: ./gradlew clean --no-daemon build
 
