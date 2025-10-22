@@ -6,11 +6,10 @@ import kotlinx.coroutines.flow.Flow
 import org.koin.core.annotation.Single
 
 @Single
-class UserRepository(val articleDao: ArticleDao) {
-
-    fun observeFavorites(): Flow<List<ArticleEntity>> {
-        return articleDao.observeFavorites()
-    }
+class UserRepository(
+    val articleDao: ArticleDao,
+) {
+    fun observeFavorites(): Flow<List<ArticleEntity>> = articleDao.observeFavorites()
 
     suspend fun addFavorite(id: String) {
         val article = articleDao.getArticle(id)
@@ -21,5 +20,4 @@ class UserRepository(val articleDao: ArticleDao) {
         val article = articleDao.getArticle(id)
         articleDao.removeFromFavorites(article)
     }
-
 }

@@ -13,12 +13,13 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun TitleText(text: String) {
     Text(
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-            .padding(top = 24.dp, bottom = 8.dp),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .padding(top = 24.dp, bottom = 8.dp),
         text = text,
         style = MaterialTheme.typography.titleLarge,
-        fontWeight = FontWeight.Bold
+        fontWeight = FontWeight.Bold,
     )
 }

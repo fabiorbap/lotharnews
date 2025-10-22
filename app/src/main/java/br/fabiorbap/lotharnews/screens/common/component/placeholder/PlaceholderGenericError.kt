@@ -8,5 +8,6 @@ import br.fabiorbap.lotharnews.R
 fun PlaceholderGenericError(onRetry: () -> Unit) {
     Placeholder(
         text = stringResource(R.string.placeholder_generic_error),
-        icon = R.drawable.ic_error) { onRetry() }
+        icon = R.drawable.ic_error,
+    ) { onRetry() }
 }

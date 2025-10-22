@@ -2,8 +2,8 @@ package br.fabiorbap.lotharnews.article.model
 
 import br.fabiorbap.lotharnews.common.util.getNewId
 
-fun ArticleResponse.toEntity(): ArticleEntity {
-    return ArticleEntity(
+fun ArticleResponse.toEntity(): ArticleEntity =
+    ArticleEntity(
         source = source?.toSource(),
         author = author,
         title = title,
@@ -12,21 +12,19 @@ fun ArticleResponse.toEntity(): ArticleEntity {
         urlToImage = urlToImage,
         publishedAt = publishedAt,
         content = content,
-        isFavorite = false
+        isFavorite = false,
     )
-}
 
 fun List<ArticleResponse>.toEntities(): List<ArticleEntity> = map { it.toEntity() }
 
-fun SourceResponse.toSource(): Source {
-    return Source(
+fun SourceResponse.toSource(): Source =
+    Source(
         id = id,
-        name = name
+        name = name,
     )
-}
 
-fun ArticleEntity.toModel(): Article {
-    return Article(
+fun ArticleEntity.toModel(): Article =
+    Article(
         url = url,
         source = source,
         author = author,
@@ -35,8 +33,7 @@ fun ArticleEntity.toModel(): Article {
         urlToImage = urlToImage,
         publishedAt = publishedAt,
         content = content,
-        isFavorite = isFavorite
+        isFavorite = isFavorite,
     )
-}
 
 fun List<ArticleEntity>.toModels(): List<Article> = map { it.toModel() }

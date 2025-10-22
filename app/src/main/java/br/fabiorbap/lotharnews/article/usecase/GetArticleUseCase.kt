@@ -5,9 +5,8 @@ import br.fabiorbap.lotharnews.article.model.ArticleRepository
 import org.koin.core.annotation.Factory
 
 @Factory
-class GetArticleUseCase(val articleRepository: ArticleRepository) {
-
-    suspend operator fun invoke(id: String): Article {
-        return articleRepository.getArticle(id)
-    }
+class GetArticleUseCase(
+    val articleRepository: ArticleRepository,
+) {
+    suspend operator fun invoke(id: String): Article = articleRepository.getArticle(id)
 }

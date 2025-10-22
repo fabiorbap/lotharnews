@@ -7,6 +7,7 @@ plugins {
     id("kotlin-kapt")
     alias(libs.plugins.google.ksp)
     alias(libs.plugins.detekt)
+    id("jacoco")
     idea
     kotlin("plugin.serialization") version "2.0.21"
 }
@@ -32,15 +33,21 @@ android {
         properties.load(project.rootProject.file("local.properties").inputStream())
         buildConfigField("String", "API_URL", "\"https://newsapi.org\"")
         buildConfigField("String", "API_KEY", "\"${properties.getProperty("API_KEY")}\"")
-
     }
 
     buildTypes {
+        debug {
+            enableUnitTestCoverage = true
+            enableAndroidTestCoverage = true
+        }
         release {
+            enableUnitTestCoverage = false
+            enableAndroidTestCoverage = false
+
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
@@ -62,6 +69,11 @@ android {
     ksp {
         arg("room.schemaLocation", "$projectDir/schemas")
     }
+}
+
+detekt {
+    config.setFrom(file("../config/detekt/detekt.yml"))
+    buildUponDefaultConfig = true
 }
 
 dependencies {
@@ -106,7 +118,7 @@ dependencies {
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.turbine)
     testImplementation(libs.kotlin.test)
-
+    implementation(libs.jacoco)
 }
 
 java {
@@ -120,8 +132,8 @@ kapt {
 }
 
 ksp {
-    arg("KOIN_USE_COMPOSE_VIEWMODEL","true")
-    arg("KOIN_CONFIG_CHECK","true")
+    arg("KOIN_USE_COMPOSE_VIEWMODEL", "true")
+    arg("KOIN_CONFIG_CHECK", "true")
 }
 
 kotlin {
@@ -137,6 +149,89 @@ idea {
     module {
         sourceDirs = sourceDirs + file("build/generated/ksp/main/kotlin")
         testSourceDirs = testSourceDirs + file("build/generated/ksp/test/kotlin")
-        generatedSourceDirs = generatedSourceDirs + file("build/generated/ksp/main/kotlin") + file("build/generated/ksp/test/kotlin")
+        generatedSourceDirs =
+            generatedSourceDirs + file("build/generated/ksp/main/kotlin") + file("build/generated/ksp/test/kotlin")
     }
 }
+
+jacoco {
+    toolVersion = libs.jacoco.get().version ?: "0.8.14"
+}
+
+val fileFilter = listOf(
+    "**/R.class",
+    "**/R$*.class",
+    "**/BuildConfig.*",
+    "**/Manifest*.*",
+    "**/*Test*.*",
+    "android/**/*.*",
+    "**/*\$ViewInjector*.*",
+    "**/*\$ViewBinder*.*",
+    "**/databinding/*",
+    "**/android/databinding/*",
+    "**/androidx/databinding/*",
+    "**/di/module/*",
+    "**/*MapperImpl*.*",
+    "**/*\$Lambda$*.*",
+    "**/*Companion*.*",
+    "**/*Module*.*",
+    "**/*Dagger*.*",
+    "**/*Hilt*.*",
+    "**/*MembersInjector*.*",
+    "**/*_Factory*.*",
+    "**/*_Provide*Factory*.*",
+    "**/*Extensions*.*",
+    "**/org/koin/ksp/generated/**/*.*"
+)
+
+fun JacocoReportBase.configureJacoco() {
+    val debugTree = fileTree("${layout.buildDirectory.get()}/tmp/kotlin-classes/debug") {
+        exclude(fileFilter)
+    } + fileTree("${layout.buildDirectory.get()}/intermediates/javac/debug/classes") {
+        exclude(fileFilter)
+    }
+    val mainSrc = "${project.projectDir}/src/main/java"
+
+    sourceDirectories.setFrom(files(mainSrc))
+    classDirectories.setFrom(files(debugTree))
+    executionData.setFrom(fileTree(layout.buildDirectory.get()) {
+        include("**/testDebugUnitTest.exec")
+    })
+}
+
+tasks.register<JacocoReport>("jacocoTestReport") {
+    dependsOn("testDebugUnitTest")
+    finalizedBy("jacocoTestCoverageVerification")
+
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+        csv.required.set(false)
+    }
+
+    configureJacoco()
+}
+
+tasks.register<JacocoCoverageVerification>("jacocoTestCoverageVerification") {
+
+    configureJacoco()
+
+    violationRules {
+
+        rule {
+            limit {
+                minimum = "0.05".toBigDecimal()
+            }
+        }
+    }
+}
+
+tasks.register("printAndroidConfig") {
+    doLast {
+        println("compileSdkVersion = ${android.compileSdk}")
+        println("buildToolsVersion = ${android.buildToolsVersion}")
+        println("targetSdkVersion = ${android.defaultConfig.targetSdk}")
+    }
+}
+
+

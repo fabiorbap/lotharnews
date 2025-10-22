@@ -12,10 +12,10 @@ import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
 
 @KoinViewModel
-class FavoritesViewModel(val observeFavoritesUseCase: ObserveFavoritesUseCase,
-    val removeFavoriteUseCase: RemoveFavoriteUseCase) :
-    ViewModel() {
-
+class FavoritesViewModel(
+    val observeFavoritesUseCase: ObserveFavoritesUseCase,
+    val removeFavoriteUseCase: RemoveFavoriteUseCase,
+) : ViewModel() {
     private val _uiState = MutableStateFlow(FavoritesState())
     val uiState: StateFlow<FavoritesState> = _uiState
     private var articles: List<Article>? = null
@@ -25,28 +25,29 @@ class FavoritesViewModel(val observeFavoritesUseCase: ObserveFavoritesUseCase,
     }
 
     fun handleIntent(intent: FavoritesIntent) {
-        when(intent) {
+        when (intent) {
             is FavoritesIntent.RemoveFavorite -> removeFavorite(intent.id)
         }
     }
 
-    private fun observeFavorites() = viewModelScope.launch {
-        observeFavoritesUseCase().collect {
-            articles = it
-            updateState()
+    private fun observeFavorites() =
+        viewModelScope.launch {
+            observeFavoritesUseCase().collect {
+                articles = it
+                updateState()
+            }
         }
-    }
 
-    private fun removeFavorite(id: String) = viewModelScope.launch {
-        removeFavoriteUseCase(id)
-    }
+    private fun removeFavorite(id: String) =
+        viewModelScope.launch {
+            removeFavoriteUseCase(id)
+        }
 
     private fun updateState() {
         _uiState.update {
             it.copy(
-                articles = articles
+                articles = articles,
             )
         }
     }
-
 }

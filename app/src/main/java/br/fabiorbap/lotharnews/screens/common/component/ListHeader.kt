@@ -16,18 +16,21 @@ import br.fabiorbap.lotharnews.R
 import br.fabiorbap.lotharnews.screens.common.theme.Dimensions
 
 @Composable
-fun ListHeader(@DrawableRes icon: Int, text: String) {
+fun ListHeader(
+    @DrawableRes icon: Int,
+    text: String,
+) {
     Row {
         Icon(
             modifier = Modifier.padding(end = Dimensions.DefaultSpacing.xSmall),
             painter = painterResource(icon),
-            contentDescription = stringResource(R.string.cd_list_header_icon)
+            contentDescription = stringResource(R.string.cd_list_header_icon),
         )
         Text(
             modifier = Modifier.fillMaxWidth(),
             text = text,
             style = MaterialTheme.typography.labelLarge,
-            textAlign = TextAlign.Start
+            textAlign = TextAlign.Start,
         )
     }
 }

@@ -1,10 +1,8 @@
 package br.fabiorbap.lotharnews.screens.common.theme
 
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 
 object Dimensions {
-
     object DefaultSpacing {
         val xSmall = 4.dp
         val small = 8.dp
@@ -17,5 +15,4 @@ object Dimensions {
         val iconDimension = 24.dp
         val iconPadding = 12.dp
     }
-
 }

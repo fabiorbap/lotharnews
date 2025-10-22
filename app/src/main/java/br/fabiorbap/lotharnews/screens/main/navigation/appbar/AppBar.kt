@@ -22,40 +22,50 @@ import br.fabiorbap.lotharnews.screens.common.theme.Dimensions
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppBar(appBarState: AppBarState, onBackButtonClick: () -> Unit) {
+fun AppBar(
+    appBarState: AppBarState,
+    onBackButtonClick: () -> Unit,
+) {
     TopAppBar(
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
-            titleContentColor = MaterialTheme.colorScheme.primary,
-        ),
+        colors =
+            TopAppBarDefaults.topAppBarColors(
+                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                titleContentColor = MaterialTheme.colorScheme.primary,
+            ),
         title = {
             AppBarText(appBarState)
         },
         navigationIcon = {
             AppBarNavigationIcon(appBarState) { onBackButtonClick() }
-        }
+        },
     )
 }
 
 @Composable
-private fun AppBarNavigationIcon(appBarState: AppBarState, onBackButtonClick: () -> Unit) {
+private fun AppBarNavigationIcon(
+    appBarState: AppBarState,
+    onBackButtonClick: () -> Unit,
+) {
     val backArrowScreens = listOf(AppBarState.Detail, AppBarState.Favorites)
     when {
-        appBarState is AppBarState.Home -> Image(
-            modifier = Modifier
-                .padding(Dimensions.TopAppBar.iconPadding)
-                .width(Dimensions.TopAppBar.iconDimension)
-                .height(Dimensions.TopAppBar.iconDimension),
-            painter = painterResource(R.drawable.ic_launcher),
-            contentDescription =
-                stringResource(R.string.cd_app_logo)
-        )
-        backArrowScreens.contains(appBarState) -> IconButton(onClick = { onBackButtonClick() }) {
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = stringResource(R.string.cd_back_button)
+        appBarState is AppBarState.Home ->
+            Image(
+                modifier =
+                    Modifier
+                        .padding(Dimensions.TopAppBar.iconPadding)
+                        .width(Dimensions.TopAppBar.iconDimension)
+                        .height(Dimensions.TopAppBar.iconDimension),
+                painter = painterResource(R.drawable.ic_launcher),
+                contentDescription =
+                    stringResource(R.string.cd_app_logo),
             )
-        }
+        backArrowScreens.contains(appBarState) ->
+            IconButton(onClick = { onBackButtonClick() }) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = stringResource(R.string.cd_back_button),
+                )
+            }
         appBarState is AppBarState.Profile -> {}
     }
 }
@@ -63,11 +73,12 @@ private fun AppBarNavigationIcon(appBarState: AppBarState, onBackButtonClick: ()
 @Composable
 private fun AppBarText(appBarState: AppBarState) {
     Text(
-        text = when (appBarState) {
-            AppBarState.Detail -> ""
-            AppBarState.Home -> stringResource(R.string.app_name)
-            AppBarState.Profile -> stringResource(R.string.bottom_nav_profile)
-            AppBarState.Favorites -> ""
-        }
+        text =
+            when (appBarState) {
+                AppBarState.Detail -> ""
+                AppBarState.Home -> stringResource(R.string.app_name)
+                AppBarState.Profile -> stringResource(R.string.bottom_nav_profile)
+                AppBarState.Favorites -> ""
+            },
     )
 }

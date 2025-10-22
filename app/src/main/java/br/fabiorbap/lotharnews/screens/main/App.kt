@@ -8,35 +8,34 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
+import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.createGraph
 import androidx.navigation.toRoute
 import br.fabiorbap.lotharnews.screens.detail.DetailScreen
+import br.fabiorbap.lotharnews.screens.favorites.FavoritesScreen
 import br.fabiorbap.lotharnews.screens.home.HomeScreen
+import br.fabiorbap.lotharnews.screens.main.navigation.Route
+import br.fabiorbap.lotharnews.screens.main.navigation.Route.Detail
+import br.fabiorbap.lotharnews.screens.main.navigation.Route.Favorites
+import br.fabiorbap.lotharnews.screens.main.navigation.Route.Home
+import br.fabiorbap.lotharnews.screens.main.navigation.Route.Profile
 import br.fabiorbap.lotharnews.screens.main.navigation.appbar.AppBar
 import br.fabiorbap.lotharnews.screens.main.navigation.appbar.AppBarState
 import br.fabiorbap.lotharnews.screens.main.navigation.bottomnav.BottomNav
-import br.fabiorbap.lotharnews.screens.main.navigation.Route
-import br.fabiorbap.lotharnews.screens.main.navigation.Route.Detail
-import br.fabiorbap.lotharnews.screens.main.navigation.Route.Home
-import br.fabiorbap.lotharnews.screens.main.navigation.Route.Profile
 import br.fabiorbap.lotharnews.screens.profile.ProfileScreen
 import org.koin.compose.KoinContext
-import androidx.navigation.NavDestination.Companion.hasRoute
-import br.fabiorbap.lotharnews.screens.favorites.FavoritesScreen
-import br.fabiorbap.lotharnews.screens.main.navigation.Route.Favorites
-
 
 @Composable
 fun App() {
@@ -47,57 +46,67 @@ fun App() {
         var appBarState: AppBarState by remember { mutableStateOf(AppBarState.Home) }
         val snackbarHostState: SnackbarHostState = remember { SnackbarHostState() }
         Scaffold(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background),
             bottomBar = {
-                if (!shouldHideBottomNav(currentDestination)) BottomNav(
-                    onClick = { route -> onBottomNavItemClick(route = route, navController) },
-                    currentDestination = currentDestination
-                )
+                if (!shouldHideBottomNav(currentDestination)) {
+                    BottomNav(
+                        onClick = { route -> onBottomNavItemClick(route = route, navController) },
+                        currentDestination = currentDestination,
+                    )
+                }
             },
             topBar = {
                 AppBar(appBarState) { navController.popBackStack() }
             },
-            snackbarHost = { SnackbarHost(snackbarHostState) }
+            snackbarHost = { SnackbarHost(snackbarHostState) },
         ) { innerPadding ->
-            val graph = navController.createGraph(startDestination = Home) {
-                composable<Home> {
-                    appBarState = AppBarState.Home
-                    HomeScreen(snackbarHostState = snackbarHostState) { id ->
-                        goToDetail(id, navController)
+            val graph =
+                navController.createGraph(startDestination = Home) {
+                    composable<Home> {
+                        appBarState = AppBarState.Home
+                        HomeScreen(snackbarHostState = snackbarHostState) { id ->
+                            goToDetail(id, navController)
+                        }
+                    }
+                    composable<Profile> {
+                        appBarState = AppBarState.Profile
+                        ProfileScreen {
+                            navController.navigate(Favorites)
+                        }
+                    }
+                    composable<Detail> { backStackEntry ->
+                        appBarState = AppBarState.Detail
+                        val id = backStackEntry.toRoute<Detail>().id
+                        DetailScreen(id)
+                    }
+                    composable<Favorites> {
+                        appBarState = AppBarState.Favorites
+                        FavoritesScreen { id -> goToDetail(id, navController) }
                     }
                 }
-                composable<Profile> {
-                    appBarState = AppBarState.Profile
-                    ProfileScreen {
-                        navController.navigate(Favorites)
-                    }
-                }
-                composable<Detail> { backStackEntry ->
-                    appBarState = AppBarState.Detail
-                    val id = backStackEntry.toRoute<Detail>().id
-                    DetailScreen(id)
-                }
-                composable<Favorites> {
-                    appBarState = AppBarState.Favorites
-                    FavoritesScreen { id -> goToDetail(id, navController) }
-                }
-            }
             NavHost(
                 navController = navController,
                 graph = graph,
-                modifier = Modifier.padding(innerPadding)
+                modifier = Modifier.padding(innerPadding),
             )
         }
     }
 }
 
-private fun goToDetail(id: String, navController: NavController) {
+private fun goToDetail(
+    id: String,
+    navController: NavController,
+) {
     navController.navigate(Detail(id))
 }
 
-fun onBottomNavItemClick(route: Route, navController: NavController) {
+fun onBottomNavItemClick(
+    route: Route,
+    navController: NavController,
+) {
     navController.navigate(route) {
         popUpTo(navController.graph.findStartDestination().id) {
             saveState = true
@@ -107,7 +116,8 @@ fun onBottomNavItemClick(route: Route, navController: NavController) {
     }
 }
 
-fun shouldHideBottomNav(currentDestination: NavDestination?): Boolean {
-    return (currentDestination?.hasRoute<Detail>() == true ||
-            currentDestination?.hasRoute<Favorites>() == true)
-}
+fun shouldHideBottomNav(currentDestination: NavDestination?): Boolean =
+    (
+        currentDestination?.hasRoute<Detail>() == true ||
+            currentDestination?.hasRoute<Favorites>() == true
+    )

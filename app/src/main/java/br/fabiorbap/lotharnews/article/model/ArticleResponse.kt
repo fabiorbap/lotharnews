@@ -6,7 +6,7 @@ data class NewsResponse(
     @SerializedName("totalResults")
     val totalResults: Int?,
     @SerializedName("articles")
-    val articles: List<ArticleResponse>?
+    val articles: List<ArticleResponse>?,
 )
 
 data class ArticleResponse(
@@ -25,12 +25,12 @@ data class ArticleResponse(
     @SerializedName("publishedAt")
     val publishedAt: String?,
     @SerializedName("content")
-    val content: String?
+    val content: String?,
 )
 
 data class SourceResponse(
     @SerializedName("id")
     val id: String?,
     @SerializedName("name")
-    val name: String?
+    val name: String?,
 )

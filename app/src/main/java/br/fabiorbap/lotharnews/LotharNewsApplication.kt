@@ -12,20 +12,17 @@ import org.koin.core.logger.Level
 import org.koin.ksp.generated.module
 
 class LotharNewsApplication : Application() {
-
-
     override fun onCreate() {
         super.onCreate()
         startKoin {
             modules(
                 ApplicationModule().module,
                 NetworkModule().module,
-                DatabaseModule().module
+                DatabaseModule().module,
             )
             androidContext(this@LotharNewsApplication)
             androidLogger(Level.DEBUG)
         }
         AndroidThreeTen.init(this)
     }
-
 }

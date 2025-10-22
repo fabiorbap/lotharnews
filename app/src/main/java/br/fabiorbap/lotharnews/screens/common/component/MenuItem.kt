@@ -14,21 +14,27 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun MenuItem(text: String, @DrawableRes icon: Int, onMenuItemClick: () -> Unit) {
+fun MenuItem(
+    text: String,
+    @DrawableRes icon: Int,
+    onMenuItemClick: () -> Unit,
+) {
     val menuItemHorizontalSpacing = 16.dp
     Row(modifier = Modifier.clickable(onClick = { onMenuItemClick() })) {
         Icon(
-            modifier = Modifier
-                .padding(
-                    start = menuItemHorizontalSpacing,
-                    end = 8.dp
-                )
-                .size(28.dp),
-            painter = painterResource(icon), contentDescription = text,
+            modifier =
+                Modifier
+                    .padding(
+                        start = menuItemHorizontalSpacing,
+                        end = 8.dp,
+                    ).size(28.dp),
+            painter = painterResource(icon),
+            contentDescription = text,
         )
         Text(
             modifier = Modifier.padding(end = menuItemHorizontalSpacing),
-            text = text, style = MaterialTheme.typography.titleMedium
+            text = text,
+            style = MaterialTheme.typography.titleMedium,
         )
     }
 }

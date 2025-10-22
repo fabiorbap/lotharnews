@@ -24,7 +24,9 @@ import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.ResponseBody.Companion.toResponseBody
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -36,7 +38,6 @@ import retrofit2.Response
 @ExperimentalCoroutinesApi
 @RunWith(JUnit4::class)
 class HomeViewModelTest {
-
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
@@ -49,7 +50,7 @@ class HomeViewModelTest {
     @RelaxedMockK
     private lateinit var toggleFavoriteArticleUseCase: ToggleFavoriteUseCase
 
-    private lateinit var SUT: HomeViewModel
+    private lateinit var sut: HomeViewModel
 
     @Before
     fun setup() {
@@ -57,165 +58,173 @@ class HomeViewModelTest {
     }
 
     @Test
-    fun observeArticles_articlesUpdated_stateUpdated() = runTest {
-        val deferrable = CompletableDeferred<Unit>()
-        coEvery { observeArticlesUseCase() } returns flow {
-            emit(emptyList())
-            deferrable.await()
-            emit(mockArticles)
+    fun observeArticles_articlesUpdated_stateUpdated() =
+        runTest {
+            val deferrable = CompletableDeferred<Unit>()
+            coEvery { observeArticlesUseCase() } returns
+                flow {
+                    emit(emptyList())
+                    deferrable.await()
+                    emit(mockArticles)
+                }
+
+            initializeViewModel()
+
+            advanceUntilIdle()
+
+            assertEquals(emptyList<Article>(), sut.uiState.value.articles)
+
+            deferrable.complete(Unit)
+            advanceUntilIdle()
+
+            assertEquals(mockArticles, sut.uiState.value.articles)
         }
 
-        initializeViewModel()
-
-        advanceUntilIdle()
-
-        assertEquals(emptyList<Article>(), SUT.uiState.value.articles)
-
-        deferrable.complete(Unit)
-        advanceUntilIdle()
-
-        assertEquals(mockArticles, SUT.uiState.value.articles)
-    }
-
     @Test
-    fun getArticles_initialState_stateInitialized() = runTest {
-        val deferrableResult = CompletableDeferred<Result>()
-        coEvery { getArticlesUseCase() } coAnswers { deferrableResult.await() }
-        initializeViewModel()
+    fun getArticles_initialState_stateInitialized() =
+        runTest {
+            val deferrableResult = CompletableDeferred<Result>()
+            coEvery { getArticlesUseCase() } coAnswers { deferrableResult.await() }
+            initializeViewModel()
 
-        advanceUntilIdle()
+            advanceUntilIdle()
 
-        with(SUT.uiState.value) {
-            assertTrue(isLoading)
-            assertEquals(null, error)
-            assertEquals(null, articles)
+            with(sut.uiState.value) {
+                assertTrue(isLoading)
+                assertEquals(null, error)
+                assertEquals(null, articles)
+            }
+
+            deferrableResult.complete(Result.Success)
+            advanceUntilIdle()
         }
 
-        deferrableResult.complete(Result.Success)
-        advanceUntilIdle()
-
-    }
-
     @Test
-    fun getArticles_initialState_articlesReturned() = runTest {
-        initializeViewModel()
-        mockSuccessOnObserveArticles()
-        mockSuccessOnGetArticles()
+    fun getArticles_initialState_articlesReturned() =
+        runTest {
+            initializeViewModel()
+            mockSuccessOnObserveArticles()
+            mockSuccessOnGetArticles()
 
-        advanceUntilIdle()
+            advanceUntilIdle()
 
-        with(SUT.uiState.value) {
-            assertFalse(isLoading)
-            assertEquals(mockArticles, articles)
-            assertEquals(null, error)
-        }
-    }
-
-    @Test
-    fun getArticles_authInvalid_unauthorizedErrorReturned() = runTest {
-        mockUnauthorizedErrorOnGetArticles()
-        initializeViewModel()
-
-        advanceUntilIdle()
-
-        with(SUT.uiState.value) {
-            assertFalse(isLoading)
-            assertEquals(null, articles)
-            assertEquals(Error.Unauthorized, error)
+            with(sut.uiState.value) {
+                assertFalse(isLoading)
+                assertEquals(mockArticles, articles)
+                assertEquals(null, error)
+            }
         }
 
-    }
-
     @Test
-    fun getArticles_serverUnavailable_serverUnavailableReturned() = runTest {
-        mockServerUnavailableOnGetArticles()
-        initializeViewModel()
+    fun getArticles_authInvalid_unauthorizedErrorReturned() =
+        runTest {
+            mockUnauthorizedErrorOnGetArticles()
+            initializeViewModel()
 
-        advanceUntilIdle()
+            advanceUntilIdle()
 
-        with(SUT.uiState.value) {
-            assertFalse(isLoading)
-            assertEquals(null, articles)
-            assertEquals(Error.ServerUnavailable, error)
-        }
-    }
-
-    @Test
-    fun getArticles_randomError_genericErrorReturned() = runTest {
-        mockGenericErrorOnGetArticles()
-        initializeViewModel()
-
-        advanceUntilIdle()
-
-        with(SUT.uiState.value) {
-            assertFalse(isLoading)
-            assertEquals(null, articles)
-            assert(error is Error.GenericError)
-        }
-    }
-
-    @Test
-    fun handleIntent_getArticlesIntentReceived_getArticlesCalled() = runTest {
-        initializeViewModel()
-
-        advanceUntilIdle()
-
-        clearMocks(
-            getArticlesUseCase,
-            answers = false
-        )
-
-        SUT.handleIntent(HomeIntent.GetArticles)
-
-        advanceUntilIdle()
-
-        coVerify(exactly = 1) { getArticlesUseCase() }
-    }
-
-    @Test
-    fun handleIntent_setFavoriteIntentReceived_toggleFavoriteCalled() = runTest {
-        initializeViewModel()
-
-        val id = "id"
-
-        SUT.handleIntent(HomeIntent.FavoriteIconClicked(id))
-
-        advanceUntilIdle()
-
-        coVerify { toggleFavoriteArticleUseCase(id) }
-
-    }
-
-    @Test
-    fun handleIntent_retryGetArticlesAttempted_articlesReturned() = runTest {
-        mockGenericErrorOnGetArticles()
-        val deferrable = CompletableDeferred<Unit>()
-        coEvery { observeArticlesUseCase() } returns flow {
-            emit(emptyList())
-            deferrable.await()
-            emit(mockArticles)
+            with(sut.uiState.value) {
+                assertFalse(isLoading)
+                assertEquals(null, articles)
+                assertEquals(Error.Unauthorized, error)
+            }
         }
 
-        initializeViewModel()
+    @Test
+    fun getArticles_serverUnavailable_serverUnavailableReturned() =
+        runTest {
+            mockServerUnavailableOnGetArticles()
+            initializeViewModel()
 
-        advanceUntilIdle()
+            advanceUntilIdle()
 
-        mockSuccessOnGetArticles()
-
-        SUT.handleIntent(HomeIntent.GetArticles)
-
-        deferrable.complete(Unit)
-        advanceUntilIdle()
-
-        with(SUT.uiState.value) {
-            assertEquals(mockArticles, articles)
-            assertFalse(isLoading)
-            assertEquals(null, error)
+            with(sut.uiState.value) {
+                assertFalse(isLoading)
+                assertEquals(null, articles)
+                assertEquals(Error.ServerUnavailable, error)
+            }
         }
-    }
+
+    @Test
+    fun getArticles_randomError_genericErrorReturned() =
+        runTest {
+            mockGenericErrorOnGetArticles()
+            initializeViewModel()
+
+            advanceUntilIdle()
+
+            with(sut.uiState.value) {
+                assertFalse(isLoading)
+                assertEquals(null, articles)
+                assert(error is Error.GenericError)
+            }
+        }
+
+    @Test
+    fun handleIntent_getArticlesIntentReceived_getArticlesCalled() =
+        runTest {
+            initializeViewModel()
+
+            advanceUntilIdle()
+
+            clearMocks(
+                getArticlesUseCase,
+                answers = false,
+            )
+
+            sut.handleIntent(HomeIntent.GetArticles)
+
+            advanceUntilIdle()
+
+            coVerify(exactly = 1) { getArticlesUseCase() }
+        }
+
+    @Test
+    fun handleIntent_setFavoriteIntentReceived_toggleFavoriteCalled() =
+        runTest {
+            initializeViewModel()
+
+            val id = "id"
+
+            sut.handleIntent(HomeIntent.FavoriteIconClicked(id))
+
+            advanceUntilIdle()
+
+            coVerify { toggleFavoriteArticleUseCase(id) }
+        }
+
+    @Test
+    fun handleIntent_retryGetArticlesAttempted_articlesReturned() =
+        runTest {
+            mockGenericErrorOnGetArticles()
+            val deferrable = CompletableDeferred<Unit>()
+            coEvery { observeArticlesUseCase() } returns
+                flow {
+                    emit(emptyList())
+                    deferrable.await()
+                    emit(mockArticles)
+                }
+
+            initializeViewModel()
+
+            advanceUntilIdle()
+
+            mockSuccessOnGetArticles()
+
+            sut.handleIntent(HomeIntent.GetArticles)
+
+            deferrable.complete(Unit)
+            advanceUntilIdle()
+
+            with(sut.uiState.value) {
+                assertEquals(mockArticles, articles)
+                assertFalse(isLoading)
+                assertEquals(null, error)
+            }
+        }
 
     private fun initializeViewModel() {
-        SUT =
+        sut =
             HomeViewModel(getArticlesUseCase, observeArticlesUseCase, toggleFavoriteArticleUseCase)
     }
 
@@ -229,23 +238,25 @@ class HomeViewModelTest {
 
     private fun mockUnauthorizedErrorOnGetArticles() {
         val errorBody = "".toResponseBody("application/json".toMediaTypeOrNull())
-        val unauthorizedException = HttpException(
-            Response.error<Any>(
-                HttpErrorCodes.Unauthorized.errorCode,
-                errorBody
+        val unauthorizedException =
+            HttpException(
+                Response.error<Any>(
+                    HttpErrorCodes.Unauthorized.errorCode,
+                    errorBody,
+                ),
             )
-        )
         coEvery { getArticlesUseCase() } returns Result.Failure(unauthorizedException)
     }
 
     private fun mockServerUnavailableOnGetArticles() {
         val errorBody = "".toResponseBody("application/json".toMediaTypeOrNull())
-        val serverUnavailableException = HttpException(
-            Response.error<Any>(
-                HttpErrorCodes.ServerUnavailable.errorCode,
-                errorBody
+        val serverUnavailableException =
+            HttpException(
+                Response.error<Any>(
+                    HttpErrorCodes.ServerUnavailable.errorCode,
+                    errorBody,
+                ),
             )
-        )
         coEvery { getArticlesUseCase() } returns Result.Failure(serverUnavailableException)
     }
 
@@ -254,5 +265,4 @@ class HomeViewModelTest {
         val genericException = HttpException(Response.error<Any>(400, errorBody))
         coEvery { getArticlesUseCase() } returns Result.Failure(genericException)
     }
-
 }

@@ -9,11 +9,10 @@ data class Article(
     val urlToImage: String?,
     val publishedAt: String?,
     val content: String?,
-    val isFavorite: Boolean? = false
-
+    val isFavorite: Boolean? = false,
 )
 
 data class Source(
     val id: String?,
-    val name: String?
+    val name: String?,
 )

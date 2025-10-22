@@ -6,5 +6,5 @@ import br.fabiorbap.lotharnews.common.network.response.Error
 data class HomeState(
     val isLoading: Boolean = false,
     val articles: List<Article>? = null,
-    val error: Error? = null
+    val error: Error? = null,
 )

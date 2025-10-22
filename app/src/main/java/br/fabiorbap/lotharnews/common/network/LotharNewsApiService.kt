@@ -4,8 +4,6 @@ import br.fabiorbap.lotharnews.article.model.NewsResponse
 import retrofit2.http.GET
 
 interface LotharNewsApiService {
-
     @GET("v2/everything/?q=politics")
     suspend fun getAllNews(): NewsResponse
-
 }

@@ -3,7 +3,6 @@ package br.fabiorbap.lotharnews.screens.detail
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -12,7 +11,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.fabiorbap.lotharnews.R
-import br.fabiorbap.lotharnews.common.util.formatIsoDate
+import br.fabiorbap.lotharnews.common.util.formatDate
 import br.fabiorbap.lotharnews.screens.common.component.ContentText
 import br.fabiorbap.lotharnews.screens.common.component.DescriptionText
 import br.fabiorbap.lotharnews.screens.common.component.LabelText
@@ -26,30 +25,32 @@ import org.koin.core.parameter.parametersOf
 @Composable
 fun DetailScreen(
     id: String,
-    detailViewModel: DetailViewModel = koinViewModel(parameters = { parametersOf(id) })
+    detailViewModel: DetailViewModel = koinViewModel(parameters = { parametersOf(id) }),
 ) {
-
     val state: DetailState by detailViewModel.uiState.collectAsStateWithLifecycle()
     Column {
         AsyncImage(
-            modifier = Modifier
-                .fillMaxWidth(),
+            modifier =
+                Modifier
+                    .fillMaxWidth(),
             alignment = Alignment.TopCenter,
             contentScale = ContentScale.FillWidth,
             model = state.article?.urlToImage,
-            contentDescription = stringResource(R.string.cd_detail_image)
+            contentDescription = stringResource(R.string.cd_detail_image),
         )
         Column(modifier = Modifier.padding(horizontal = Dimensions.DefaultSpacing.medium)) {
-            TitleText(state.article?.title ?: "")
-            SubtitleText(state.article?.publishedAt?.formatIsoDate() ?: "")
+            TitleText(state.article?.title.orEmpty())
+            SubtitleText(state.article?.publishedAt?.formatDate().orEmpty())
             LabelText(
-                text = stringResource(
-                    R.string.detail_source_text, state.article?.source?.name ?: "",
-                    state.article?.author ?: ""
-                )
+                text =
+                    stringResource(
+                        R.string.detail_source_text,
+                        state.article?.source?.name.orEmpty(),
+                        state.article?.author.orEmpty(),
+                    ),
             )
-            DescriptionText(state.article?.description ?: "")
-            ContentText(state.article?.content ?: "")
+            DescriptionText(state.article?.description.orEmpty())
+            ContentText(state.article?.content.orEmpty())
         }
     }
 }

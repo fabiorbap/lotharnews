@@ -26,36 +26,40 @@ fun Placeholder(
     text: String = stringResource(R.string.placeholder_generic_error),
     @DrawableRes icon: Int = R.drawable.ic_error,
     buttonText: String = stringResource(R.string.retry),
-    onRetryClick: () -> Unit
+    onRetryClick: () -> Unit,
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight(),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Icon(
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally),
+            modifier =
+                Modifier
+                    .align(Alignment.CenterHorizontally),
             painter = painterResource(icon),
             contentDescription = stringResource(R.string.cd_card_with_image_icon),
             tint = MaterialTheme.colorScheme.primary,
         )
         Text(
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .padding(Dimensions.DefaultSpacing.medium),
+            modifier =
+                Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(Dimensions.DefaultSpacing.medium),
             text = text,
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.bodyMedium,
         )
         Button(onClick = onRetryClick) {
             Text(
-                modifier = Modifier
-                    .wrapContentWidth()
-                    .wrapContentHeight(),
-                text = buttonText
+                modifier =
+                    Modifier
+                        .wrapContentWidth()
+                        .wrapContentHeight(),
+                text = buttonText,
             )
         }
     }
