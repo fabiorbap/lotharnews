@@ -28,16 +28,16 @@ jobs:
       env:
         LOCAL_PROPERTIES: ${{ secrets.LOCAL_PROPERTIES }}
 
-    - name: Install Android Components
-      run: |
-        $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platforms;android-34" "build-tools;34.0.0"
-
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
       with:
         packages: |
-          platforms;android-34
-          build-tools;34.0.0
+          platform-tools
+
+    - name: Force install API 34
+      run: |
+        yes | sdkmanager --licenses
+        yes | sdkmanager "platforms;android-34" "build-tools;34.0.0"
 
     - name: Build with Gradle
       run: ./gradlew clean --no-daemon build
