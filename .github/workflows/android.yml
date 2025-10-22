@@ -40,7 +40,10 @@ jobs:
         yes | sdkmanager "platforms;android-34" "build-tools;34.0.0"
 
     - name: Build with Gradle
-      run: ./gradlew clean --no-daemon build --info
+      run: ./gradlew clean --no-daemon build
+
+    - name: Print Android build configuration
+      run: ./gradlew :app:printAndroidConfig
 
     - name: Run tests and check coverage threshold with Jacoco
       run: ./gradlew jacocoTestReport

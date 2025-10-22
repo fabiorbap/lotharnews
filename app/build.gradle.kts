@@ -41,6 +41,9 @@ android {
             enableAndroidTestCoverage = true
         }
         release {
+            enableUnitTestCoverage = false
+            enableAndroidTestCoverage = false
+
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -220,6 +223,14 @@ tasks.register<JacocoCoverageVerification>("jacocoTestCoverageVerification") {
                 minimum = "0.05".toBigDecimal()
             }
         }
+    }
+}
+
+tasks.register("printAndroidConfig") {
+    doLast {
+        println("compileSdkVersion = ${android.compileSdk}")
+        println("buildToolsVersion = ${android.buildToolsVersion}")
+        println("targetSdkVersion = ${android.defaultConfig.targetSdk}")
     }
 }
 
