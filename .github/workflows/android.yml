@@ -42,8 +42,11 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew clean --no-daemon build
 
-    - name: Print Android build configuration
-      run: ./gradlew :app:printAndroidConfig
+    - name: Verify SDK installation
+      run: |
+        echo "Checking SDK location: $ANDROID_HOME"
+        ls -l $ANDROID_HOME/platforms
+        ls -l $ANDROID_HOME/build-tools
 
     - name: Run tests and check coverage threshold with Jacoco
       run: ./gradlew jacocoTestReport
